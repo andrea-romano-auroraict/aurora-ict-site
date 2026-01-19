@@ -1,0 +1,133 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.jsx";
+---
+
+<BaseLayout title="Home">
+  <Navbar />
+
+  <main class="pt-24">
+
+    <!-- HERO -->
+    <section class="max-w-7xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-12">
+      <div>
+        <h1 class="text-5xl font-bold mb-6">
+          Your Virtual CTO for secure, scalable growth
+        </h1>
+        <p class="text-xl mb-8">
+          Strategy, architecture, and delivery oversight that turns technology into a competitive advantage.
+        </p>
+        <a
+          href="/contact"
+          class="inline-block bg-sky-500 text-white px-6 py-3 rounded-xl shadow hover:bg-sky-600 transition"
+        >
+          Book a free consult
+        </a>
+      </div>
+
+      <!-- Hero Visual -->
+      <div class="bg-gradient-to-br from-sky-100 to-slate-100 rounded-2xl h-80 flex items-center justify-center">
+        <span class="text-slate-400">Modern technology leadership</span>
+      </div>
+    </section>
+
+    <!-- TRUST STRIP -->
+    <section class="bg-white py-12 border-t border-b">
+      <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div>
+          <div class="font-bold text-xl">Strategy</div>
+          <div class="text-slate-500">Clear roadmaps</div>
+        </div>
+        <div>
+          <div class="font-bold text-xl">Security</div>
+          <div class="text-slate-500">Risk reduction</div>
+        </div>
+        <div>
+          <div class="font-bold text-xl">Cloud</div>
+          <div class="text-slate-500">Scalable systems</div>
+        </div>
+        <div>
+          <div class="font-bold text-xl">Delivery</div>
+          <div class="text-slate-500">Measured outcomes</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES PREVIEW -->
+    <section class="py-20">
+      <div class="max-w-7xl mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-12">How I Help</h2>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="p-6 bg-white shadow rounded-xl">
+            <h3 class="font-bold mb-2">Virtual CTO Leadership</h3>
+            <p class="text-slate-600">
+              Senior technology leadership without the cost of a full-time executive.
+            </p>
+          </div>
+
+          <div class="p-6 bg-white shadow rounded-xl">
+            <h3 class="font-bold mb-2">Cloud & Architecture</h3>
+            <p class="text-slate-600">
+              Secure, scalable platforms designed for long-term growth.
+            </p>
+          </div>
+
+          <div class="p-6 bg-white shadow rounded-xl">
+            <h3 class="font-bold mb-2">Cyber Risk Reduction</h3>
+            <p class="text-slate-600">
+              Practical security improvements aligned to business priorities.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="bg-white py-20">
+      <div class="max-w-7xl mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-12">My Approach</h2>
+
+        <div class="grid md:grid-cols-4 gap-8 text-center">
+          <div>
+            <div class="text-4xl font-bold text-sky-500 mb-4">1</div>
+            <h3 class="font-bold mb-2">Discover</h3>
+            <p class="text-slate-600">Understand your goals, risks, and constraints</p>
+          </div>
+
+          <div>
+            <div class="text-4xl font-bold text-sky-500 mb-4">2</div>
+            <h3 class="font-bold mb-2">Plan</h3>
+            <p class="text-slate-600">Create a realistic technology roadmap</p>
+          </div>
+
+          <div>
+            <div class="text-4xl font-bold text-sky-500 mb-4">3</div>
+            <h3 class="font-bold mb-2">Execute</h3>
+            <p class="text-slate-600">Govern delivery and vendor performance</p>
+          </div>
+
+          <div>
+            <div class="text-4xl font-bold text-sky-500 mb-4">4</div>
+            <h3 class="font-bold mb-2">Improve</h3>
+            <p class="text-slate-600">Measure outcomes and optimise continuously</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="py-24 text-center">
+      <h2 class="text-4xl font-bold mb-6">
+        Let’s make your technology simpler, safer, and more effective
+      </h2>
+      <a
+        href="/contact"
+        class="inline-block bg-sky-500 text-white px-8 py-4 rounded-xl shadow hover:bg-sky-600 transition"
+      >
+        Book a free consultation
+      </a>
+    </section>
+
+  </main>
+</BaseLayout>

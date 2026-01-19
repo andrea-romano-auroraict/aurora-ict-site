@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.jsx";
+---
+
+<BaseLayout title="Home">
+  <Navbar />
+  <main class="pt-24">
+    <!-- Page content -->
+  </main>
+</BaseLayout>
+<section class="bg-white py-20">
+  <div class="max-w-7xl mx-auto px-6">
+    <h2 class="text-3xl font-bold mb-12">What I Help You Achieve</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="p-6 shadow rounded-xl">Virtual CTO Leadership</div>
+      <div class="p-6 shadow rounded-xl">Cloud & Architecture</div>
+      <div class="p-6 shadow rounded-xl">Cyber Risk Reduction</div>
+    </div>
+  </div>
+</section>
