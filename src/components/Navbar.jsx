@@ -22,8 +22,11 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 w-full z-50 site-header">
       {/* ================= BRAND BANNER ================= */}
-      <div className="glass border-b border-white/10 overflow-visible">
-        <div className="max-w-7xl mx-auto px-6 py-2 md:py-3 flex items-center justify-center relative overflow-visible">
+<div className="glass border-b border-white/10 overflow-visible">
+  <div className="max-w-7xl mx-auto px-6 py-4 md:py-3 flex items-center justify-center relative overflow-visible">
+    {/* ... your logo + mobile button ... */}
+  </div>
+</div>
           {/* Centered logo */}
           <motion.a
             href="/"
@@ -38,7 +41,7 @@ export default function Navbar() {
             <img
               src="/aurora-ict-logo.png"
               alt="Aurora ICT — AI-powered IT services"
-              className="w-auto max-h-none !h-[72px] md:!h-[116px] lg:!h-[144px] xl:!h-[173px]"
+              className="w-auto max-h-none !h-[86px] md:!h-[116px] lg:!h-[144px] xl:!h-[173px]"
             />
           </motion.a>
 
