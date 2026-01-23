@@ -1,0 +1,70 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.jsx";
+---
+
+<BaseLayout title="Contact" page="contact">
+  <Navbar client:load />
+
+  <main class="pt-48 md:pt-60">
+    <section class="max-w-7xl mx-auto px-6 py-16 md:py-20">
+      <div class="glass rounded-3xl glow p-8 md:p-10">
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white">Contact</h1>
+        <p class="mt-4 text-lg md:text-xl" style="color: var(--muted);">
+          Tell us what you’re trying to achieve and we’ll suggest practical next steps. No pressure—just clarity.
+        </p>
+
+        <div class="mt-8 flex flex-col sm:flex-row gap-4">
+          <a
+            href="mailto:hello@auroraict.com.au?subject=Enquiry%20-%20Aurora%20ICT"
+            class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-extrabold transition hover:brightness-110"
+            style="background: var(--color-accent-green); color: #08110c; box-shadow: 0 0 22px rgba(57,255,122,0.22);"
+          >
+            Email Aurora ICT
+          </a>
+
+          <a
+            href="/services"
+            class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold border border-white/15 bg-white/10 hover:bg-white/15 transition text-white"
+          >
+            View services
+          </a>
+        </div>
+
+        <div class="mt-6 text-sm" style="color: var(--muted);">
+          Brisbane / QLD • Remote Australia-wide
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 pb-24 grid md:grid-cols-2 gap-6">
+      <div class="glass rounded-2xl glow p-8">
+        <h2 class="text-white font-extrabold text-3xl">Book a call</h2>
+        <p class="mt-3" style="color: var(--muted);">
+          If you use Calendly (or similar), replace the placeholder with your embed.
+        </p>
+
+        <div class="mt-6 rounded-2xl border border-white/15 bg-white/5 p-6">
+          <div class="text-white font-bold">Calendly embed placeholder</div>
+          <div class="mt-2 text-sm" style="color: var(--muted);">
+            Replace this box with an iframe embed when ready.
+          </div>
+        </div>
+
+        <div class="mt-4 text-sm" style="color: var(--muted);">
+          Typical first call: 20 minutes • Outcome: clear next steps
+        </div>
+      </div>
+
+      <div class="glass rounded-2xl glow p-8">
+        <h2 class="text-white font-extrabold text-3xl">What to include</h2>
+        <ul class="mt-4 list-disc pl-5 space-y-2" style="color: var(--muted);">
+          <li>Your business size and industry</li>
+          <li>What’s not working right now</li>
+          <li>Your timeline (e.g., “this quarter”)</li>
+          <li>Any vendors/systems involved</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

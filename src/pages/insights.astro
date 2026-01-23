@@ -1,0 +1,55 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.jsx";
+---
+
+<BaseLayout title="Insights" page="insights">
+  <Navbar client:load />
+
+  <main class="pt-48 md:pt-60">
+    <section class="max-w-7xl mx-auto px-6 py-16 md:py-20">
+      <div class="glass rounded-3xl glow p-8 md:p-10">
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white">Insights</h1>
+        <p class="mt-4 text-lg md:text-xl" style="color: var(--muted);">
+          Practical guidance you can apply immediately. Convert these into full articles over time for SEO.
+        </p>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 pb-24">
+      <div class="grid md:grid-cols-3 gap-6">
+        <article class="glass rounded-2xl glow p-7">
+          <div class="text-sm font-bold" style="color: var(--color-accent-purple);">Virtual CTO</div>
+          <h2 class="text-white font-extrabold text-2xl mt-2">Virtual CTO vs MSP</h2>
+          <p class="mt-3" style="color: var(--muted);">
+            MSPs keep systems running; a Virtual CTO provides strategy, governance, and senior decision support.
+          </p>
+        </article>
+
+        <article class="glass rounded-2xl glow p-7">
+          <div class="text-sm font-bold" style="color: var(--color-accent-purple);">Security</div>
+          <h2 class="text-white font-extrabold text-2xl mt-2">5 controls that reduce risk fastest</h2>
+          <p class="mt-3" style="color: var(--muted);">
+            MFA, least privilege, backups, patching, and logging—done well—deliver outsized risk reduction.
+          </p>
+        </article>
+
+        <article class="glass rounded-2xl glow p-7">
+          <div class="text-sm font-bold" style="color: var(--color-accent-purple);">Cloud</div>
+          <h2 class="text-white font-extrabold text-2xl mt-2">Simple cloud cost audit</h2>
+          <p class="mt-3" style="color: var(--muted);">
+            Right-size, remove idle resources, set budgets, and measure. Most teams can cut waste quickly with basics.
+          </p>
+        </article>
+      </div>
+
+      <div class="mt-10">
+        <a href="/contact"
+           class="inline-flex items-center justify-center px-8 py-4 rounded-xl font-extrabold transition hover:brightness-110"
+           style="background: var(--color-accent-green); color: #08110c; box-shadow: 0 0 22px rgba(57,255,122,0.22);">
+          Ask for a tailored recommendation
+        </a>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

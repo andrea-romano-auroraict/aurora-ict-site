@@ -1,1 +1,174 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Base */
+  --color-bg: #060814; /* deep navy */
+  --text: #e7eefc;
+  --muted: rgba(231, 238, 252, 0.75);
+
+  /* Brand */
+  --color-accent-green: #39ff7a;
+  --color-accent-purple: #7c3aed;
+
+  /* Glass */
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.14);
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: "Source Sans 3", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: var(--color-bg);
+  color: var(--text);
+}
+
+/* headings */
+h1, h2, h3, h4 {
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* ===== Aurora base background (works even if images missing) ===== */
+.aurora-shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 18% 10%, rgba(57,255,122,0.22), transparent 40%),
+    radial-gradient(circle at 82% 14%, rgba(124,58,237,0.18), transparent 44%),
+    radial-gradient(circle at 70% 90%, rgba(57,255,122,0.16), transparent 52%),
+    linear-gradient(180deg, #07091a 0%, #060814 55%, #060814 100%);
+}
+
+/* subtle star grain overlay */
+.aurora-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  background-image: radial-gradient(rgba(255,255,255,0.22) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(circle at 50% 0%, black 0%, transparent 70%);
+}
+
+/* ===== Page background images (WebP) =====
+   Place your images here:
+   public/bg/bg-home.webp
+   public/bg/bg-services.webp
+   public/bg/bg-industries.webp
+   public/bg/bg-case-studies.webp
+   public/bg/bg-insights.webp
+   public/bg/bg-contact.webp
+*/
+.bg-home::after,
+.bg-services::after,
+.bg-industries::after,
+.bg-casestudies::after,
+.bg-insights::after,
+.bg-contact::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+
+  /* Default (overridden per page below) */
+  background-image:
+    linear-gradient(180deg,
+      rgba(6,8,20,0.28) 0%,
+      rgba(6,8,20,0.68) 40%,
+      rgba(6,8,20,0.92) 100%
+    ),
+    url("/bg/bg-home.webp");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* keep subtle so content stays readable */
+  opacity: 0.26;
+
+  /* helps unify look across different images */
+  filter: saturate(1.05) contrast(1.06);
+}
+
+/* Per-page image + slight opacity tuning */
+.bg-home::after {
+  background-image:
+    linear-gradient(180deg, rgba(6,8,20,0.22), rgba(6,8,20,0.92)),
+    url("/bg/bg-home.webp");
+  opacity: 0.28;
+}
+
+.bg-services::after {
+  background-image:
+    linear-gradient(180deg, rgba(6,8,20,0.24), rgba(6,8,20,0.92)),
+    url("/bg/bg-services.webp");
+  opacity: 0.26;
+}
+
+.bg-industries::after {
+  background-image:
+    linear-gradient(180deg, rgba(6,8,20,0.24), rgba(6,8,20,0.92)),
+    url("/bg/bg-industries.webp");
+  opacity: 0.25;
+}
+
+.bg-casestudies::after {
+  background-image:
+    linear-gradient(180deg, rgba(6,8,20,0.24), rgba(6,8,20,0.92)),
+    url("/bg/bg-case-studies.webp");
+  opacity: 0.27;
+}
+
+.bg-insights::after {
+  background-image:
+    linear-gradient(180deg, rgba(6,8,20,0.20), rgba(6,8,20,0.92)),
+    url("/bg/bg-insights.webp");
+  opacity: 0.23;
+}
+
+.bg-contact::after {
+  background-image:
+    linear-gradient(180deg, rgba(6,8,20,0.22), rgba(6,8,20,0.92)),
+    url("/bg/bg-contact.webp");
+  opacity: 0.25;
+}
+
+/* ===== Reusable UI helpers ===== */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+}
+
+.glow {
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.10),
+    0 0 28px rgba(57,255,122,0.16),
+    0 0 36px rgba(124,58,237,0.14);
+}
+
+/* Links (nice default) */
+a {
+  text-decoration: none;
+}
+
+/* ===== Slower, noticeable page transitions ===== */
+::view-transition-old(root) {
+  animation: fadeOut 520ms ease forwards;
+}
+::view-transition-new(root) {
+  animation: fadeIn 520ms ease forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(10px); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

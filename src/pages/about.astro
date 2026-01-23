@@ -3,9 +3,45 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Navbar from "../components/Navbar.jsx";
 ---
 
-<BaseLayout title="Home">
-  <Navbar />
-  <main class="pt-24">
-    <!-- Page content -->
+<BaseLayout title="About" page="about">
+  <Navbar client:load />
+
+  <main class="pt-48 md:pt-60">
+    <section class="max-w-7xl mx-auto px-6 py-16 md:py-20">
+      <div class="glass rounded-3xl glow p-8 md:p-10">
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white">About</h1>
+        <p class="mt-4 text-lg md:text-xl" style="color: var(--muted);">
+          Aurora ICT helps growing businesses modernise safely—using clear strategy, disciplined delivery, and sensible AI adoption.
+        </p>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 pb-24 grid md:grid-cols-2 gap-6">
+      <div class="glass rounded-2xl glow p-8">
+        <h2 class="text-white font-extrabold text-3xl">How we work</h2>
+        <ul class="mt-4 list-disc pl-5 space-y-2" style="color: var(--muted);">
+          <li><strong class="text-white">Outcome-first:</strong> success measures are defined up front.</li>
+          <li><strong class="text-white">Transparent:</strong> clear scope, milestones, and reporting.</li>
+          <li><strong class="text-white">Security-minded:</strong> practical controls without slowing delivery.</li>
+          <li><strong class="text-white">AI with governance:</strong> responsible adoption with real value.</li>
+        </ul>
+      </div>
+
+      <div class="glass rounded-2xl glow p-8">
+        <h2 class="text-white font-extrabold text-3xl">What you can expect</h2>
+        <ul class="mt-4 list-disc pl-5 space-y-2" style="color: var(--muted);">
+          <li>Clear priorities and a realistic roadmap</li>
+          <li>Reduced delivery and vendor risk</li>
+          <li>Improved security baseline and visibility</li>
+          <li>Systems that scale cleanly as you grow</li>
+        </ul>
+
+        <a href="/contact"
+           class="mt-8 inline-flex items-center justify-center px-8 py-4 rounded-xl font-extrabold transition hover:brightness-110"
+           style="background: var(--color-accent-green); color: #08110c; box-shadow: 0 0 22px rgba(57,255,122,0.22);">
+          Book a free consult
+        </a>
+      </div>
+    </section>
   </main>
 </BaseLayout>

@@ -3,9 +3,81 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Navbar from "../components/Navbar.jsx";
 ---
 
-<BaseLayout title="Home">
-  <Navbar />
-  <main class="pt-24">
-    <!-- Page content -->
+<BaseLayout title="Industries" page="industries">
+  <Navbar client:load />
+
+  <main class="pt-48 md:pt-60">
+    <section class="max-w-7xl mx-auto px-6 py-16 md:py-20">
+      <div class="glass rounded-3xl glow p-8 md:p-10">
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white">Industries</h1>
+        <p class="mt-4 text-lg md:text-xl" style="color: var(--muted);">
+          Aurora ICT supports teams that want secure, scalable IT—without complexity. Here are common fit profiles.
+        </p>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 pb-24">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="glass rounded-2xl glow p-7">
+          <div class="text-sm font-bold" style="color: var(--color-accent-purple);">SMEs</div>
+          <h2 class="text-white font-extrabold text-2xl mt-2">Small & Medium Business</h2>
+          <p class="mt-3" style="color: var(--muted);">
+            You need outcomes, not complexity—clear priorities, sensible spend, and predictable delivery.
+          </p>
+          <ul class="mt-4 list-disc pl-5 space-y-2" style="color: var(--muted);">
+            <li>Roadmaps aligned to business goals</li>
+            <li>Vendor selection & accountability</li>
+            <li>Security uplift without disruption</li>
+          </ul>
+        </div>
+
+        <div class="glass rounded-2xl glow p-7">
+          <div class="text-sm font-bold" style="color: var(--color-accent-purple);">Growth</div>
+          <h2 class="text-white font-extrabold text-2xl mt-2">Startups & Scale-ups</h2>
+          <p class="mt-3" style="color: var(--muted);">
+            Scale safely—architecture, cost control, and delivery discipline so growth doesn’t create fragility.
+          </p>
+          <ul class="mt-4 list-disc pl-5 space-y-2" style="color: var(--muted);">
+            <li>Cloud reliability & cost control</li>
+            <li>Security and compliance foundations</li>
+            <li>Lightweight governance</li>
+          </ul>
+        </div>
+
+        <div class="glass rounded-2xl glow p-7">
+          <div class="text-sm font-bold" style="color: var(--color-accent-purple);">Client service</div>
+          <h2 class="text-white font-extrabold text-2xl mt-2">Professional Services</h2>
+          <p class="mt-3" style="color: var(--muted);">
+            Reduce admin overhead, improve security, and create a client experience that builds trust.
+          </p>
+          <ul class="mt-4 list-disc pl-5 space-y-2" style="color: var(--muted);">
+            <li>Secure collaboration & data handling</li>
+            <li>Workflow automation & AI tools</li>
+            <li>Continuity and resilience</li>
+          </ul>
+        </div>
+
+        <div class="glass rounded-2xl glow p-7">
+          <div class="text-sm font-bold" style="color: var(--color-accent-purple);">Operations</div>
+          <h2 class="text-white font-extrabold text-2xl mt-2">Field Services & Construction</h2>
+          <p class="mt-3" style="color: var(--muted);">
+            Practical systems for teams on the move—devices, connectivity, security, and streamlined workflows.
+          </p>
+          <ul class="mt-4 list-disc pl-5 space-y-2" style="color: var(--muted);">
+            <li>Mobile-first tooling and access</li>
+            <li>Device management and security</li>
+            <li>Integration between systems</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-10">
+        <a href="/contact"
+           class="inline-flex items-center justify-center px-8 py-4 rounded-xl font-extrabold transition hover:brightness-110"
+           style="background: var(--color-accent-green); color: #08110c; box-shadow: 0 0 22px rgba(57,255,122,0.22);">
+          Talk about your industry
+        </a>
+      </div>
+    </section>
   </main>
 </BaseLayout>
