@@ -38,6 +38,35 @@ const bgClass =
     <meta property="og:type" content="website" />
     <meta property="og:url" content={siteUrl} />
   </head>
+<script is:inline>
+  function setHeaderOffset() {
+    const header = document.querySelector(".site-header");
+    const main = document.querySelector("main.page-main");
+    if (!header || !main) return;
+
+    const h = Math.ceil(header.getBoundingClientRect().height);
+
+    // Apply to CSS var and directly to main padding for reliability
+    document.documentElement.style.setProperty("--header-offset", `${h}px`);
+    main.style.paddingTop = `${h}px`;
+  }
+
+  // Run now, after load, and after route transitions
+  window.addEventListener("load", () => {
+    setHeaderOffset();
+    requestAnimationFrame(setHeaderOffset);
+    setTimeout(setHeaderOffset, 200);
+  });
+
+  window.addEventListener("resize", setHeaderOffset);
+
+  // Astro view transitions / client router (covers SPA navigation)
+  document.addEventListener("astro:page-load", () => {
+    setHeaderOffset();
+    requestAnimationFrame(setHeaderOffset);
+    setTimeout(setHeaderOffset, 200);
+  });
+</script>
 
   <body class={`antialiased text-slate-800 aurora-shell ${bgClass}`}>
     <slot />
