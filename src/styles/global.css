@@ -245,3 +245,18 @@ a {
     transform: translateY(0);
   }
 }
+/* ===== Header offset system (prevents top gap on all pages) ===== */
+:root {
+  --header-offset: 148px; /* Desktop header height */
+}
+
+.page-main {
+  padding-top: var(--header-offset);
+}
+
+/* Mobile tuning */
+@media (max-width: 768px) {
+  :root {
+    --header-offset: 118px; /* Mobile header height */
+  }
+}
