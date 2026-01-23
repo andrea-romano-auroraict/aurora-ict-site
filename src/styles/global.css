@@ -68,6 +68,7 @@ h1, h2, h3, h4 {
 .bg-industries::after,
 .bg-casestudies::after,
 .bg-insights::after,
+.bg-about::after,
 .bg-contact::after {
   content: "";
   position: fixed;
@@ -130,6 +131,13 @@ h1, h2, h3, h4 {
   opacity: 0.23;
 }
 
+.bg-about::after {
+  background-image:
+    linear-gradient(180deg, rgba(6,8,20,0.22), rgba(6,8,20,0.92)),
+    url("/bg/bg-about.webp");
+  opacity: 0.26;
+}
+
 .bg-contact::after {
   background-image:
     linear-gradient(180deg, rgba(6,8,20,0.22), rgba(6,8,20,0.92)),
@@ -140,7 +148,7 @@ h1, h2, h3, h4 {
 /* ===== Reusable UI helpers ===== */
 .glass {
   background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  border: 0.5px solid var(--glass-border);
   backdrop-filter: blur(12px);
 }
 
