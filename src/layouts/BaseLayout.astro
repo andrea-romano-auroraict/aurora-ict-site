@@ -13,6 +13,8 @@ const {
 const fullTitle = title === baseTitle ? baseTitle : `${title} | ${baseTitle}`;
 const siteUrl = Astro.site?.toString() ?? "https://auroraict.com.au";
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const socialImageUrl = new URL("/signature_banner.png", siteUrl).toString();
+const socialImageAlt = "Aurora ICT";
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": ["ProfessionalService", "ITService"],
@@ -68,9 +70,16 @@ const bgClass =
 
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="Aurora ICT" />
+    <meta property="og:locale" content="en_AU" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:alt" content={socialImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
   </head>
 <script is:inline>
