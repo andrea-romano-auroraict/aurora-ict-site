@@ -2,11 +2,15 @@
 import "../styles/global.css";
 import { ViewTransitions } from "astro:transitions";
 
-const { title = "Aurora ICT", page = "home" } = Astro.props;
-
-const description =
+const baseTitle = "Aurora ICT";
+const defaultDescription =
   "AI-powered IT services — Virtual CTO, security, cloud, and delivery confidence for growing businesses.";
-const siteUrl = "https://auroraict.com.au";
+const { title = baseTitle, page = "home", description = defaultDescription } = Astro.props;
+
+const siteUrl = Astro.site?.toString() ?? "https://auroraict.com.au";
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl);
+const fullTitle = title === baseTitle ? baseTitle : `${title} | ${baseTitle}`;
+const ogImage = new URL("/aurora-ict-logo.png", siteUrl).toString();
 
 const bgClass =
   page === "home" ? "bg-home" :
@@ -25,18 +29,59 @@ const bgClass =
     <ViewTransitions />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} | Aurora ICT</title>
+    <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalUrl.toString()} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <meta property="og:title" content={title} />
+    <meta name="geo.region" content="AU-QLD" />
+    <meta name="geo.placename" content="Brisbane" />
+
+    <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={siteUrl} />
+    <meta property="og:url" content={canonicalUrl.toString()} />
+    <meta property="og:site_name" content={baseTitle} />
+    <meta property="og:locale" content="en_AU" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content="Aurora ICT" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json">
+      {JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ITService",
+        name: baseTitle,
+        url: siteUrl,
+        image: ogImage,
+        description,
+        email: "hello@auroraict.com.au",
+        areaServed: "AU",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Brisbane",
+          addressRegion: "QLD",
+          addressCountry: "Australia"
+        },
+        serviceType: [
+          "Virtual CTO",
+          "IT strategy",
+          "Cloud architecture",
+          "Cyber risk reduction",
+          "Project oversight",
+          "AI enablement"
+        ]
+      })}
+    </script>
   </head>
 <script is:inline>
   function setHeaderOffset() {
