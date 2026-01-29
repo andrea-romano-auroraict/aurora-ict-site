@@ -2,11 +2,42 @@
 import "../styles/global.css";
 import { ViewTransitions } from "astro:transitions";
 
-const { title = "Aurora ICT", page = "home" } = Astro.props;
+const baseTitle = "Aurora ICT";
+const {
+  title = baseTitle,
+  page = "home",
+  robots = "index,follow",
+  description = "AI-powered IT services — Virtual CTO, security, cloud, and delivery confidence for growing businesses."
+} = Astro.props;
 
-const description =
-  "AI-powered IT services — Virtual CTO, security, cloud, and delivery confidence for growing businesses.";
-const siteUrl = "https://auroraict.com.au";
+const fullTitle = title === baseTitle ? baseTitle : `${title} | ${baseTitle}`;
+const siteUrl = Astro.site?.toString() ?? "https://auroraict.com.au";
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": ["ProfessionalService", "ITService"],
+  name: "Aurora ICT",
+  url: siteUrl,
+  description,
+  email: "hello@auroraict.com.au",
+  serviceType: ["Virtual CTO", "Cybersecurity", "Cloud Services", "Delivery Confidence"],
+  areaServed: [
+    { "@type": "City", name: "Brisbane" },
+    { "@type": "AdministrativeArea", name: "Queensland" }
+  ],
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Brisbane",
+    addressRegion: "QLD",
+    addressCountry: "AU"
+  },
+  offers: {
+    "@type": "Offer",
+    name: "Free initial consultation",
+    price: "0",
+    priceCurrency: "AUD"
+  }
+};
 
 const bgClass =
   page === "home" ? "bg-home" :
@@ -25,18 +56,22 @@ const bgClass =
     <ViewTransitions />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} | Aurora ICT</title>
+    <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={siteUrl} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={fullTitle} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
   </head>
 <script is:inline>
   function setHeaderOffset() {
