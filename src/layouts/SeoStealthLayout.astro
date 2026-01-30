@@ -1,0 +1,263 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Navbar from "../components/Navbar.jsx";
+
+const {
+  title,
+  description,
+  h1,
+  seoSections = [],
+  faqs = []
+} = Astro.props;
+
+const h1Parts = typeof h1 === "string" ? h1.split(" | ") : [];
+const h1Line1 = h1Parts[0] ?? "";
+const h1Line2 = h1Parts[1];
+
+const faqSchema =
+  faqs.length > 0
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: faq.answer
+          }
+        }))
+      }
+    : null;
+---
+
+<BaseLayout title={title} description={description} page="home">
+  <Navbar client:load />
+  {faqSchema && (
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
+  )}
+
+  <main class="page-main">
+    <!-- HERO -->
+    <section class="max-w-7xl mx-auto px-6 py-16 md:py-24">
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+        <div class="glass rounded-3xl glow p-8 md:p-10">
+          <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/12 border border-white/20">
+            <span class="h-3 w-3 rounded-full" style="background: var(--color-accent-green); box-shadow: 0 0 18px rgba(57,255,122,0.45);"></span>
+            <span class="text-base md:text-lg font-extrabold tracking-wide text-white">
+              AI-powered IT services
+            </span>
+            <span class="hidden md:inline text-sm font-semibold px-3 py-1 rounded-full"
+                  style="background: rgba(124,58,237,0.20); border: 1px solid rgba(124,58,237,0.35); color: rgba(231,238,252,0.95);">
+              Strategy • Security • Cloud • Delivery
+            </span>
+          </div>
+
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mt-5">
+            {h1Line1}
+            {h1Line2 && (
+              <span class="block mt-2" style="color: var(--color-accent-green);">
+                {h1Line2}
+              </span>
+            )}
+          </h1>
+
+          <p class="text-lg md:text-xl mt-5" style="color: var(--muted);">
+            Strategy, architecture, security, and delivery oversight that turns technology into a measurable advantage.
+          </p>
+
+          <div class="mt-8 flex flex-col sm:flex-row gap-4">
+            <a
+              href="/contact"
+              class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-extrabold transition hover:brightness-110"
+              style="background: var(--color-accent-green); color: #08110c; box-shadow: 0 0 22px rgba(57,255,122,0.22);"
+            >
+              Book a free consult
+            </a>
+
+            <a
+              href="/services"
+              class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold border border-white/15 bg-white/10 hover:bg-white/15 transition text-white"
+            >
+              View services
+            </a>
+          </div>
+
+          <div class="mt-6 text-sm" style="color: var(--muted);">
+            Brisbane / QLD • Remote Australia-wide • Flexible engagements
+          </div>
+        </div>
+
+        <!-- Hero Visual -->
+        <div class="glass rounded-3xl glow p-8 md:p-10 min-h-[320px] flex items-center justify-center text-center">
+          <div>
+            <div class="text-white text-2xl md:text-3xl font-extrabold">
+              Technology leadership, without full-time cost
+            </div>
+            <div class="mt-3 text-base md:text-lg" style="color: var(--muted);">
+              Roadmaps • Governance • Delivery • Security • AI enablement
+            </div>
+
+            <div class="mt-8 grid grid-cols-2 gap-3 text-sm">
+              <div class="rounded-xl bg-white/10 border border-white/15 px-4 py-3 text-white">Fast discovery</div>
+              <div class="rounded-xl bg-white/10 border border-white/15 px-4 py-3 text-white">Clear priorities</div>
+              <div class="rounded-xl bg-white/10 border border-white/15 px-4 py-3 text-white">Reduced risk</div>
+              <div class="rounded-xl bg-white/10 border border-white/15 px-4 py-3 text-white">Measured outcomes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRUST STRIP -->
+    <section class="max-w-7xl mx-auto px-6 pb-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="glass rounded-2xl p-5 text-center">
+          <div class="text-white font-extrabold text-lg">Strategy</div>
+          <div class="text-sm mt-1" style="color: var(--muted);">Clear roadmaps</div>
+        </div>
+        <div class="glass rounded-2xl p-5 text-center">
+          <div class="text-white font-extrabold text-lg">Security</div>
+          <div class="text-sm mt-1" style="color: var(--muted);">Risk reduction</div>
+        </div>
+        <div class="glass rounded-2xl p-5 text-center">
+          <div class="text-white font-extrabold text-lg">Cloud</div>
+          <div class="text-sm mt-1" style="color: var(--muted);">Scalable systems</div>
+        </div>
+        <div class="glass rounded-2xl p-5 text-center">
+          <div class="text-white font-extrabold text-lg">Delivery</div>
+          <div class="text-sm mt-1" style="color: var(--muted);">Measured outcomes</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES PREVIEW -->
+    <section class="max-w-7xl mx-auto px-6 py-16">
+      <div class="flex items-end justify-between gap-6 mb-10">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-extrabold text-white">How We Help</h2>
+          <p class="mt-2 text-lg" style="color: var(--muted);">
+            Senior guidance to simplify decisions, improve security, and deliver outcomes with confidence.
+          </p>
+        </div>
+        <a href="/services"
+           class="hidden sm:inline-flex items-center justify-center px-5 py-3 rounded-xl font-bold border border-white/15 bg-white/10 hover:bg-white/15 transition text-white">
+          Explore services
+        </a>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="glass rounded-2xl glow p-6 hover:bg-white/10 transition">
+          <div class="text-sm font-bold" style="color: var(--color-accent-purple);">Fractional leadership</div>
+          <h3 class="text-white font-extrabold text-xl mt-2">Virtual CTO</h3>
+          <p class="mt-2" style="color: var(--muted);">
+            Executive-level leadership without a full-time hire—strategy, governance, prioritisation.
+          </p>
+        </div>
+
+        <div class="glass rounded-2xl glow p-6 hover:bg-white/10 transition">
+          <div class="text-sm font-bold" style="color: var(--color-accent-purple);">Scalable foundations</div>
+          <h3 class="text-white font-extrabold text-xl mt-2">Cloud & Architecture</h3>
+          <p class="mt-2" style="color: var(--muted);">
+            Modern, secure platforms designed for reliability, cost control, and growth.
+          </p>
+        </div>
+
+        <div class="glass rounded-2xl glow p-6 hover:bg-white/10 transition">
+          <div class="text-sm font-bold" style="color: var(--color-accent-purple);">Risk & resilience</div>
+          <h3 class="text-white font-extrabold text-xl mt-2">Cyber Risk Reduction</h3>
+          <p class="mt-2" style="color: var(--muted);">
+            Practical security uplift—MFA, access control, backups, logging, and readiness.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="max-w-7xl mx-auto px-6 pb-20">
+      <div class="glass rounded-3xl glow p-8 md:p-10">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white">Our Approach</h2>
+        <p class="mt-2 text-lg" style="color: var(--muted);">
+          A simple process that keeps priorities clear and delivery predictable.
+        </p>
+
+        <div class="grid md:grid-cols-4 gap-6 mt-10">
+          <div class="rounded-2xl bg-white/10 border border-white/15 p-6">
+            <div class="text-4xl font-extrabold" style="color: var(--color-accent-green);">1</div>
+            <div class="text-white font-extrabold text-lg mt-2">Discover</div>
+            <div class="mt-2" style="color: var(--muted);">Goals, risks, constraints, and quick wins.</div>
+          </div>
+          <div class="rounded-2xl bg-white/10 border border-white/15 p-6">
+            <div class="text-4xl font-extrabold" style="color: var(--color-accent-green);">2</div>
+            <div class="text-white font-extrabold text-lg mt-2">Plan</div>
+            <div class="mt-2" style="color: var(--muted);">A realistic roadmap with milestones and owners.</div>
+          </div>
+          <div class="rounded-2xl bg-white/10 border border-white/15 p-6">
+            <div class="text-4xl font-extrabold" style="color: var(--color-accent-green);">3</div>
+            <div class="text-white font-extrabold text-lg mt-2">Execute</div>
+            <div class="mt-2" style="color: var(--muted);">Govern delivery and vendor performance.</div>
+          </div>
+          <div class="rounded-2xl bg-white/10 border border-white/15 p-6">
+            <div class="text-4xl font-extrabold" style="color: var(--color-accent-green);">4</div>
+            <div class="text-white font-extrabold text-lg mt-2">Improve</div>
+            <div class="mt-2" style="color: var(--muted);">Measure outcomes and optimise continuously.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="max-w-7xl mx-auto px-6 pb-24 text-center">
+      <div class="glass rounded-3xl glow p-10 md:p-14">
+        <h2 class="text-3xl md:text-5xl font-extrabold text-white">
+          Let’s make your technology simpler, safer, and more effective
+        </h2>
+        <p class="mt-4 text-lg md:text-xl" style="color: var(--muted);">
+          Book a quick call and we’ll suggest practical next steps—no pressure, just clarity.
+        </p>
+
+        <a
+          href="/contact"
+          class="mt-8 inline-flex items-center justify-center px-8 py-4 rounded-xl font-extrabold transition hover:brightness-110"
+          style="background: var(--color-accent-green); color: #08110c; box-shadow: 0 0 22px rgba(57,255,122,0.22);"
+        >
+          Book a free consult
+        </a>
+      </div>
+    </section>
+
+    <!-- SEO SECTIONS -->
+    <section class="max-w-6xl mx-auto px-6 pb-16">
+      <div class="glass rounded-3xl glow p-8 md:p-10">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white">More detail for Brisbane SMBs</h2>
+        <div class="mt-6 space-y-6">
+          {seoSections.map((section) => (
+            <div class="border-b border-white/10 pb-6 last:border-b-0 last:pb-0">
+              <h3 class="text-xl md:text-2xl font-extrabold text-white">{section.title}</h3>
+              <p class="mt-3 text-base md:text-lg" style="color: var(--muted);">
+                {section.content}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQS -->
+    <section class="max-w-6xl mx-auto px-6 pb-24">
+      <div class="glass rounded-3xl glow p-8 md:p-10">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white">FAQs</h2>
+        <div class="mt-6 space-y-6">
+          {faqs.map((faq) => (
+            <div class="border-b border-white/10 pb-6 last:border-b-0 last:pb-0">
+              <h3 class="text-lg md:text-xl font-extrabold text-white">{faq.question}</h3>
+              <p class="mt-3 text-base md:text-lg" style="color: var(--muted);">
+                {faq.answer}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
