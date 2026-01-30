@@ -83,6 +83,14 @@ const bgClass =
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageUrl} />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-168LXJW6LF"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-168LXJW6LF');
+    </script>
   </head>
 <script is:inline>
   function setHeaderOffset() {
