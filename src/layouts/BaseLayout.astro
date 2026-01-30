@@ -15,11 +15,13 @@ const siteUrl = Astro.site?.toString() ?? "https://auroraict.com.au";
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
 const socialImageUrl = new URL("/signature_banner.png", siteUrl).toString();
 const socialImageAlt = "Aurora ICT";
+const hostname = Astro.url.hostname;
+const robotsMeta = hostname === "auroraict.com.au" ? robots : "noindex, nofollow";
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": ["ProfessionalService", "ITService"],
   name: "Aurora ICT",
-  url: siteUrl,
+  url: canonicalUrl,
   description,
   email: "hello@auroraict.com.au",
   serviceType: ["Virtual CTO", "Cybersecurity", "Cloud Services", "Delivery Confidence"],
@@ -60,7 +62,7 @@ const bgClass =
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <meta name="robots" content={robots} />
+    <meta name="robots" content={robotsMeta} />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
