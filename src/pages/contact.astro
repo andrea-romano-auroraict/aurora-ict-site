@@ -75,24 +75,33 @@ import Navbar from "../components/Navbar.jsx";
 </BaseLayout>
 
 <script is:inline>
-  document.querySelectorAll("[data-ga-email-lead]").forEach((el) => {
-    el.addEventListener("click", () => {
-      if (typeof window === "undefined") return;
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("[data-ga-email-lead]").forEach((el) => {
+      el.addEventListener("click", (e) => {
+        if (typeof window === "undefined") return;
 
-      const payload = {
-        event_category: "contact",
-        event_label: "mailto",
-        transport_type: "beacon",
-        non_interaction: true,
-        page_path: window.location.pathname,
-      };
+        e.preventDefault(); // pause mailto briefly so GA can send
 
-      if (typeof window.gtag === "function") {
-        window.gtag("event", "email_lead", payload);
-      } else if (Array.isArray(window.dataLayer)) {
-        // Safe GTM-style fallback
-        window.dataLayer.push({ event: "email_lead", ...payload });
-      }
+        const payload = {
+          event_category: "contact",
+          event_label: "mailto",
+          transport_type: "beacon",
+          non_interaction: true,
+          page_path: window.location.pathname,
+        };
+
+        if (typeof window.gtag === "function") {
+          window.gtag("event", "email_lead", payload);
+        } else if (Array.isArray(window.dataLayer)) {
+          // Safe GTM-style fallback
+          window.dataLayer.push({ event: "email_lead", ...payload });
+        }
+
+        // Let GA send, then open mail client
+        setTimeout(() => {
+          window.location.href = el.getAttribute("href");
+        }, 150);
+      });
     });
   });
 </script>
