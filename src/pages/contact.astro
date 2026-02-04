@@ -80,7 +80,7 @@ import Navbar from "../components/Navbar.jsx";
       el.addEventListener("click", (e) => {
         if (typeof window === "undefined") return;
 
-        e.preventDefault();
+        e.preventDefault(); // pause mailto briefly so GA can send
 
         const payload = {
           event_category: "contact",
@@ -97,6 +97,7 @@ import Navbar from "../components/Navbar.jsx";
           window.dataLayer.push({ event: "email_lead", ...payload });
         }
 
+        // Let GA send, then open mail client
         setTimeout(() => {
           window.location.href = el.getAttribute("href");
         }, 150);
