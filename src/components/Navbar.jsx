@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 const links = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
+  { label: "Digital Roadmap", href: "/it-strategy-roadmap" },
   { label: "Industries", href: "/industries" },
   { label: "Case Studies", href: "/case-studies" },
   { label: "Insights", href: "/insights" },
@@ -63,7 +64,7 @@ export default function Navbar() {
               whileHover={{ y: -8, scale: 1.05 }}
               transition={{ type: "spring", stiffness: 320, damping: 16 }}
               whileTap={{ scale: 0.97 }}
-              className="relative px-6 py-3 rounded-xl text-[18px] font-semibold text-white/95 transition"
+              className="relative inline-flex min-h-[72px] items-center justify-center px-6 py-3 rounded-xl text-[18px] font-semibold text-white/95 text-center transition"
               style={{
                 background: "rgba(255,255,255,0.06)",
                 border: "1px solid rgba(255,255,255,0.12)",
