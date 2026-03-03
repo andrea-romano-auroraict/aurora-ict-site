@@ -1,0 +1,76 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.jsx";
+---
+
+<BaseLayout
+  title="IT Consulting"
+  page="services"
+  description="Vendor-neutral IT consulting to plan, secure, and deliver practical outcomes for growing businesses."
+>
+  <Navbar client:load />
+
+  <main class="page-main">
+    <section class="max-w-7xl mx-auto px-6 py-16 md:py-20">
+      <div class="glass rounded-3xl glow p-8 md:p-10">
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white">IT Consulting</h1>
+        <p class="mt-4 text-lg md:text-xl" style="color: var(--muted);">
+          Practical guidance across strategy, architecture, and cybersecurity so your team can move with confidence.
+        </p>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 pb-24 space-y-6">
+      <div class="glass rounded-2xl glow p-6 md:p-8">
+        <div class="text-sm font-bold" style="color: var(--color-accent-purple);">Featured strategic service</div>
+        <h2 class="text-white font-extrabold text-2xl md:text-3xl mt-2">Digital Roadmap (1–5 Year IT Strategy)</h2>
+        <p class="mt-3" style="color: var(--muted);">
+          Structured 1-year, 3-year and 5-year planning across architecture, network, platforms/SaaS and cybersecurity—vendor-neutral and outcome-focused.
+        </p>
+        <div class="mt-6 flex flex-col sm:flex-row gap-4">
+          <a href="/it-strategy-roadmap"
+             class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-extrabold transition hover:brightness-110"
+             style="background: var(--color-accent-green); color: #08110c; box-shadow: 0 0 22px rgba(57,255,122,0.22);">
+            Explore Digital Roadmap
+          </a>
+          <a href="/contact"
+             class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold border border-white/15 bg-white/10 hover:bg-white/15 transition text-white">
+            Contact Aurora ICT
+          </a>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="glass rounded-2xl glow p-6">
+          <h3 class="text-white font-extrabold text-xl">Fractional Technology Leadership</h3>
+          <p class="mt-3" style="color: var(--muted);">
+            Ongoing advisory support for prioritisation, governance, and delivery oversight when you need senior guidance without a full-time executive.
+          </p>
+        </div>
+
+        <div class="glass rounded-2xl glow p-6">
+          <h3 class="text-white font-extrabold text-xl">Architecture & Platform Decisions</h3>
+          <p class="mt-3" style="color: var(--muted);">
+            We help evaluate options across cloud, network, and SaaS platforms so your architecture choices stay resilient, secure, and maintainable.
+          </p>
+        </div>
+
+        <div class="glass rounded-2xl glow p-6">
+          <h3 class="text-white font-extrabold text-xl">Cybersecurity Uplift</h3>
+          <p class="mt-3" style="color: var(--muted);">
+            From access controls to incident readiness, we focus on practical controls that reduce risk quickly and support operational continuity.
+          </p>
+        </div>
+      </div>
+
+      <div class="glass rounded-2xl glow p-6 md:p-8">
+        <h2 class="text-white font-extrabold text-2xl">How we work</h2>
+        <p class="mt-3" style="color: var(--muted);">
+          Every engagement starts with your business outcomes, then maps decisions to measurable milestones. Our
+          <a href="/it-strategy-roadmap" class="font-bold underline decoration-white/40 hover:decoration-white text-white">Digital Roadmap</a>
+          approach provides a clear sequence for the next 12, 36, and 60 months so execution stays aligned.
+        </p>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
