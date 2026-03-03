@@ -23,7 +23,7 @@
 /* Mobile header is shorter → smaller offset */
 @media (max-width: 768px) {
   :root {
-    --header-offset: 142px;
+    --header-offset: 104px;
   }
 }
 
@@ -257,6 +257,6 @@ a {
 /* Mobile tuning */
 @media (max-width: 768px) {
   :root {
-    --header-offset: 118px; /* Mobile header height */
+    --header-offset: 104px; /* Mobile header height */
   }
 }
