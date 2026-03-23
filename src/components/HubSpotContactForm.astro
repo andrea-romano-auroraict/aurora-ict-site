@@ -26,8 +26,8 @@ const targetId = `hubspot-form-${formId}`;
 
 <script is:inline define:vars={{ region, portalId, formId, targetId }}>
   (() => {
-    const root = document.currentScript?.previousElementSibling;
     const target = document.getElementById(targetId);
+    const root = target?.closest(".aurora-hubspot-form");
     const statusEl = root?.querySelector("[data-hs-status]");
     const fallbackEl = root?.querySelector("[data-hs-fallback]");
     const firedSubmissionKeys = new Set();
@@ -35,6 +35,11 @@ const targetId = `hubspot-form-${formId}`;
     let attempts = 0;
 
     if (!target || !root) return;
+
+    console.info("[HubSpotContactForm] Using wrapper root", {
+      tagName: root.tagName,
+      className: root.className,
+    });
 
     const setState = (state) => {
       root.dataset.state = state;
