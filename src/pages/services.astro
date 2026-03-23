@@ -6,7 +6,7 @@ import Navbar from "../components/Navbar.jsx";
 <BaseLayout
   title="Services"
   page="services"
-  description="IT services for small and medium businesses—strategy, security, and cloud—with a free initial consultation."
+  description="Modular IT advisory services for growing businesses—reduce cost, risk, and complexity, starting with a Technology Health Check."
 >
   <Navbar client:load />
 
@@ -15,14 +15,15 @@ import Navbar from "../components/Navbar.jsx";
       <div class="glass rounded-3xl glow p-8 md:p-10">
         <h1 class="text-4xl md:text-6xl font-extrabold text-white">Services</h1>
         <p class="mt-4 text-lg md:text-xl" style="color: var(--muted);">
-          Choose a single engagement or combine services into a tailored plan. Every engagement includes clear scope and measurable outcomes.
+          Aurora ICT helps growing businesses reduce technology cost, risk, waste, and complexity across systems, tools, and vendors.
+          Our support is practical, business-focused, and modular, so you can start where needed, continue where value is clear, and stop at any stage.
         </p>
 
         <div class="mt-8 flex flex-col sm:flex-row gap-4">
           <a href="/contact"
              class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-extrabold transition hover:brightness-110"
              style="background: var(--color-accent-green); color: #08110c; box-shadow: 0 0 22px rgba(57,255,122,0.22);">
-            Book a free consult
+            Book a free initial consultation
           </a>
           <a href="/case-studies"
              class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold border border-white/15 bg-white/10 hover:bg-white/15 transition text-white">
@@ -32,90 +33,60 @@ import Navbar from "../components/Navbar.jsx";
       </div>
     </section>
 
-    <section class="max-w-7xl mx-auto px-6 pb-24">
-      <div class="grid md:grid-cols-3 gap-6">
-        <div class="glass rounded-2xl glow p-6 md:col-span-3">
-          <div class="text-sm font-bold" style="color: var(--color-accent-purple);">Prime strategic service</div>
-          <h2 class="text-white font-extrabold text-2xl mt-2">IT Strategy &amp; Roadmap Planning</h2>
-          <p class="mt-3" style="color: var(--muted);">
-            Structured 1–5 year technology planning across architecture, network, platforms/SaaS and cybersecurity—vendor-neutral and outcome-focused.
-          </p>
-          <a href="/it-strategy-roadmap"
-             class="mt-5 inline-flex items-center justify-center px-6 py-3 rounded-xl font-extrabold transition hover:brightness-110"
+    <section class="max-w-7xl mx-auto px-6 pb-24 space-y-10">
+      <section class="glass rounded-3xl glow p-8 md:p-10">
+        <div class="text-sm font-bold" style="color: var(--color-accent-purple);">Recommended first step</div>
+        <h2 class="text-white font-extrabold text-2xl md:text-3xl mt-2">Technology Health Check</h2>
+        <p class="mt-3" style="color: var(--muted);">
+          Quickly identify cost leaks, risk hotspots, tool overlap, and operational friction across your technology environment.
+        </p>
+        <p class="mt-2" style="color: var(--muted);">
+          Best when you need clarity before committing budget, changing vendors, or launching new initiatives.
+        </p>
+        <div class="mt-5 flex flex-wrap gap-4">
+          <a href="/technology-health-check"
+             class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-extrabold transition hover:brightness-110"
              style="background: var(--color-accent-green); color: #08110c; box-shadow: 0 0 22px rgba(57,255,122,0.22);">
-            View IT Roadmap Service
+            Start here
+          </a>
+          <a href="/contact"
+             class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold border border-white/15 bg-white/10 hover:bg-white/15 transition text-white">
+            Book a free consultation
           </a>
         </div>
-        <div class="glass rounded-2xl glow p-6">
-          <div class="text-sm font-bold" style="color: var(--color-accent-purple);">Fractional leadership</div>
-          <h2 class="text-white font-extrabold text-xl mt-2">Virtual CTO (Fractional)</h2>
-          <p class="mt-3" style="color: var(--muted);">
-            Senior tech leadership without a full-time hire—prioritisation, governance, vendors, and delivery confidence.
-          </p>
-          <ul class="mt-4 list-disc pl-5 space-y-2" style="color: var(--muted);">
-            <li>Strategy and roadmap</li>
-            <li>Vendor evaluation and management</li>
-            <li>Delivery oversight and reporting</li>
-            <li>Budgeting and prioritisation</li>
-          </ul>
-        </div>
+      </section>
 
-        <div class="glass rounded-2xl glow p-6">
-          <div class="text-sm font-bold" style="color: var(--color-accent-purple);">Architecture & cloud</div>
-          <h2 class="text-white font-extrabold text-xl mt-2">Cloud & Systems Architecture</h2>
-          <p class="mt-3" style="color: var(--muted);">
-            Secure, scalable foundations that reduce cost and support growth—without unnecessary complexity.
-          </p>
-          <ul class="mt-4 list-disc pl-5 space-y-2" style="color: var(--muted);">
-            <li>Target architecture & migration plans</li>
-            <li>Reliability, backups, and DR readiness</li>
-            <li>Cloud cost control (FinOps basics)</li>
-            <li>Integrations and modern patterns</li>
-          </ul>
-        </div>
+      <section>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white">Offer stack</h2>
+        <p class="mt-3 text-lg" style="color: var(--muted);">
+          Engage in one area or combine offers into a modular advisory path that fits your business stage.
+        </p>
 
-        <div class="glass rounded-2xl glow p-6">
-          <div class="text-sm font-bold" style="color: var(--color-accent-purple);">Risk & resilience</div>
-          <h2 class="text-white font-extrabold text-xl mt-2">Cyber Risk Reduction</h2>
-          <p class="mt-3" style="color: var(--muted);">
-            Practical uplift focused on the controls that reduce risk fastest—aligned to your business priorities.
-          </p>
-          <ul class="mt-4 list-disc pl-5 space-y-2" style="color: var(--muted);">
-            <li>MFA, access control, least privilege</li>
-            <li>Logging, monitoring, alerting</li>
-            <li>Backup verification and recovery drills</li>
-            <li>Policies and incident readiness</li>
-          </ul>
-        </div>
+        <div class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <article class="glass rounded-2xl glow p-6 border border-white/20">
+            <h3 class="text-white font-extrabold text-xl">Technology Health Check</h3>
+            <p class="mt-3" style="color: var(--muted);">Surfaces your highest-impact opportunities to reduce waste, tighten risk, and simplify decision-making.</p>
+            <p class="mt-2 text-sm" style="color: var(--muted);">Relevant when you need a practical baseline and clear next actions.</p>
+            <a href="/technology-health-check" class="mt-4 inline-block font-bold" style="color: var(--color-accent-green);">Start here →</a>
+          </article>
 
-        <div class="glass rounded-2xl glow p-6">
-          <div class="text-sm font-bold" style="color: var(--color-accent-purple);">Delivery confidence</div>
-          <h2 class="text-white font-extrabold text-xl mt-2">Project & Program Oversight</h2>
-          <p class="mt-3" style="color: var(--muted);">
-            Keep initiatives on track with clear milestones, accountability, and quality checks—especially with vendors.
-          </p>
-          <ul class="mt-4 list-disc pl-5 space-y-2" style="color: var(--muted);">
-            <li>Project setup and success metrics</li>
-            <li>Cadence, reporting, escalation</li>
-            <li>Risk/issue management</li>
-            <li>Go-live readiness</li>
-          </ul>
-        </div>
+          <article class="glass rounded-2xl glow p-6">
+            <h3 class="text-white font-extrabold text-xl">90-Day IT Priorities Plan</h3>
+            <p class="mt-3" style="color: var(--muted);">Turns findings into a focused 90-day plan with quick wins, owners, and sequencing.</p>
+            <p class="mt-2 text-sm" style="color: var(--muted);">Relevant when your team needs momentum without overcommitting resources.</p>
+          </article>
 
-        <div class="glass rounded-2xl glow p-6">
-          <div class="text-sm font-bold" style="color: var(--color-accent-purple);">AI enablement</div>
-          <h2 class="text-white font-extrabold text-xl mt-2">AI & Automation</h2>
-          <p class="mt-3" style="color: var(--muted);">
-            Safe, sensible AI adoption—reduce admin load, improve support, and accelerate workflows with governance.
-          </p>
-          <ul class="mt-4 list-disc pl-5 space-y-2" style="color: var(--muted);">
-            <li>Use-case discovery and ROI sizing</li>
-            <li>Tool selection and rollout plan</li>
-            <li>Workflow automation & integration</li>
-            <li>Governance and staff enablement</li>
-          </ul>
-        </div>
+          <article class="glass rounded-2xl glow p-6">
+            <h3 class="text-white font-extrabold text-xl">Vendor and SaaS Review</h3>
+            <p class="mt-3" style="color: var(--muted);">Reviews vendors, contracts, and tool overlap to improve value, reduce waste, and simplify your stack.</p>
+            <p class="mt-2 text-sm" style="color: var(--muted);">Relevant when costs are rising or platforms feel duplicated and hard to manage.</p>
+          </article>
 
+          <article class="glass rounded-2xl glow p-6">
+            <h3 class="text-white font-extrabold text-xl">Cyber Risk Quick Wins Review</h3>
+            <p class="mt-3" style="color: var(--muted);">Identifies practical control improvements that reduce risk quickly without heavy transformation work.</p>
+            <p class="mt-2 text-sm" style="color: var(--muted);">Relevant when leadership needs immediate, sensible risk reduction steps.</p>
+          </article>
         <div class="glass rounded-2xl glow p-6">
           <div class="text-sm font-bold" style="color: var(--color-accent-purple);">Clarity fast</div>
           <h2 class="text-white font-extrabold text-xl mt-2"><a href="/technology-health-check" class="underline decoration-white/30 hover:decoration-white text-white">Technology Health Check</a></h2>
@@ -135,48 +106,100 @@ import Navbar from "../components/Navbar.jsx";
         </div>
       </div>
 
+          <article class="glass rounded-2xl glow p-6">
+            <h3 class="text-white font-extrabold text-xl">AI Readiness Session</h3>
+            <p class="mt-3" style="color: var(--muted);">Clarifies where AI can add measurable business value and what guardrails are required for safe adoption.</p>
+            <p class="mt-2 text-sm" style="color: var(--muted);">Relevant when evaluating AI opportunities but unsure where to start.</p>
+          </article>
 
-      <section class="mt-10 glass rounded-3xl glow p-8 md:p-10">
+          <article class="glass rounded-2xl glow p-6">
+            <h3 class="text-white font-extrabold text-xl">Strategic Roadmap Support</h3>
+            <p class="mt-3" style="color: var(--muted);">Builds 1-year, 3-year, and 5-year technology direction aligned to business growth and operating realities.</p>
+            <p class="mt-2 text-sm" style="color: var(--muted);">Relevant when you need long-term clarity across priorities, budget, and delivery sequencing.</p>
+            <a href="/it-strategy-roadmap" class="mt-4 inline-block font-bold" style="color: var(--color-accent-green);">Learn more →</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="glass rounded-3xl glow p-8 md:p-10">
         <h2 class="text-3xl md:text-4xl font-extrabold text-white">How Aurora ICT works</h2>
         <p class="mt-4 text-lg" style="color: var(--muted);">
-          Aurora ICT works as a practical, modular advisory journey. Start with the support you need, continue only where it adds value, and stop at any stage once your business has the clarity, structure, and confidence to move forward.
+          Aurora ICT operates as a modular advisory journey: start with the most relevant service, continue only where value is clear, and pause at any stage as your internal capability strengthens.
         </p>
 
         <div class="mt-8 grid md:grid-cols-2 gap-6">
           <div class="glass rounded-2xl p-6">
             <h3 class="text-white font-extrabold text-xl">1. Assess</h3>
             <p class="mt-3" style="color: var(--muted);">
-              Understand costs, risks, systems, vendors, and immediate priorities.
+              Map current costs, risks, systems, vendors, and immediate friction points.
             </p>
           </div>
           <div class="glass rounded-2xl p-6">
             <h3 class="text-white font-extrabold text-xl">2. Prioritise</h3>
             <p class="mt-3" style="color: var(--muted);">
-              Turn findings into practical actions, quick wins, and a realistic plan.
+              Translate findings into practical priorities, quick wins, and staged decisions.
             </p>
           </div>
           <div class="glass rounded-2xl p-6">
             <h3 class="text-white font-extrabold text-xl">3. Support</h3>
             <p class="mt-3" style="color: var(--muted);">
-              Provide targeted advisory help where it adds value across projects, vendors, security, and delivery.
+              Add targeted advisory support only where it lifts outcomes across delivery, vendors, and risk.
             </p>
           </div>
           <div class="glass rounded-2xl p-6">
             <h3 class="text-white font-extrabold text-xl">4. Simplify</h3>
             <p class="mt-3" style="color: var(--muted);">
-              Leave the business with clearer ownership, more manageable systems, and greater confidence.
+              Leave your business with clearer ownership, lower complexity, and stronger self-sufficiency.
             </p>
           </div>
         </div>
       </section>
 
-      <div class="mt-10 text-center">
+      <section class="glass rounded-3xl glow p-8 md:p-10">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white">Broader advisory and delivery support</h2>
+        <p class="mt-4 text-lg" style="color: var(--muted);">
+          Start with a focused offer like the Technology Health Check, then add broader strategic, technical, or delivery support only where it helps your business move faster with less risk.
+        </p>
+
+        <div class="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <article class="glass rounded-2xl p-6">
+            <h3 class="text-white font-extrabold text-xl">Virtual CTO / Fractional Technology Leadership</h3>
+            <p class="mt-3" style="color: var(--muted);">Senior leadership support for prioritisation, governance, vendor direction, and clearer executive technology decisions.</p>
+          </article>
+
+          <article class="glass rounded-2xl p-6">
+            <h3 class="text-white font-extrabold text-xl">Cloud &amp; Systems Architecture</h3>
+            <p class="mt-3" style="color: var(--muted);">Design and refine scalable, resilient platforms that reduce complexity while supporting growth and performance needs.</p>
+          </article>
+
+          <article class="glass rounded-2xl p-6">
+            <h3 class="text-white font-extrabold text-xl">Cyber Risk Reduction</h3>
+            <p class="mt-3" style="color: var(--muted);">Apply practical control improvements that lower business risk and strengthen security posture without unnecessary overhead.</p>
+          </article>
+
+          <article class="glass rounded-2xl p-6">
+            <h3 class="text-white font-extrabold text-xl">Project &amp; Program Oversight</h3>
+            <p class="mt-3" style="color: var(--muted);">Improve delivery confidence through stronger planning, accountability, vendor coordination, and milestone visibility.</p>
+          </article>
+
+          <article class="glass rounded-2xl p-6 md:col-span-2 lg:col-span-1">
+            <h3 class="text-white font-extrabold text-xl">AI &amp; Automation</h3>
+            <p class="mt-3" style="color: var(--muted);">Identify practical automation and AI opportunities that improve efficiency while maintaining sensible governance and control.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="glass rounded-3xl glow p-8 md:p-10 text-center">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white">Not sure where to start?</h2>
+        <p class="mt-3 text-lg" style="color: var(--muted);">
+          Book a free initial consultation and we will help you choose the right first step based on your current business priorities.
+        </p>
         <a href="/contact"
-           class="inline-flex items-center justify-center px-8 py-4 rounded-xl font-extrabold transition hover:brightness-110"
+           class="mt-6 inline-flex items-center justify-center px-8 py-4 rounded-xl font-extrabold transition hover:brightness-110"
            style="background: var(--color-accent-green); color: #08110c; box-shadow: 0 0 22px rgba(57,255,122,0.22);">
-          Discuss the right option
+          Book your free initial consultation
         </a>
-      </div>
+      </section>
     </section>
   </main>
 </BaseLayout>
