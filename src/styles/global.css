@@ -78,13 +78,21 @@ h4 {
 /* subtle star grain overlay */
 .aurora-shell::before {
   content: "";
-  position: fixed;
+  position: absolute;
   inset: 0;
   pointer-events: none;
   opacity: 0.16;
   background-image: radial-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1px);
   background-size: 34px 34px;
   mask-image: radial-gradient(circle at 50% 0%, black 0%, transparent 70%);
+}
+
+.bg-home.aurora-shell::before {
+  opacity: 0.22;
+  background-image:
+    linear-gradient(180deg, rgba(6, 8, 20, 0.35), rgba(6, 8, 20, 0.95)),
+    radial-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1px);
+  background-size: auto, 34px 34px;
 }
 
 /* ===== Page background images (WebP) =====
@@ -132,14 +140,8 @@ h4 {
 /* Per-page image + slight opacity tuning */
 .bg-home::after {
   position: absolute;
-  background-image: linear-gradient(
-      180deg,
-      rgba(6, 8, 20, 0.12),
-      rgba(6, 8, 20, 0.68)
-    ),
-    url("/bg/bg-home.webp");
-  opacity: 0.08;
-  filter: saturate(1) contrast(1);
+  background-image: url("/bg/bg-home.webp");
+  opacity: 0.24;
 }
 
 .bg-services::after {
