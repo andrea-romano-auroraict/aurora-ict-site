@@ -34,7 +34,7 @@
 
 html,
 body {
-  height: 100%;
+  min-height: 100%;
 }
 
 body {
@@ -55,6 +55,7 @@ h4 {
 
 /* ===== Aurora base background (works even if images missing) ===== */
 .aurora-shell {
+  position: relative;
   min-height: 100vh;
   background: radial-gradient(
       circle at 18% 10%,
@@ -77,13 +78,21 @@ h4 {
 /* subtle star grain overlay */
 .aurora-shell::before {
   content: "";
-  position: fixed;
+  position: absolute;
   inset: 0;
   pointer-events: none;
   opacity: 0.16;
   background-image: radial-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1px);
   background-size: 34px 34px;
   mask-image: radial-gradient(circle at 50% 0%, black 0%, transparent 70%);
+}
+
+.bg-home.aurora-shell::before {
+  opacity: 0.18;
+  background-image:
+    linear-gradient(180deg, rgba(6, 8, 20, 0.28), rgba(6, 8, 20, 0.82)),
+    radial-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1px);
+  background-size: auto, 34px 34px;
 }
 
 /* ===== Page background images (WebP) =====
@@ -130,13 +139,9 @@ h4 {
 
 /* Per-page image + slight opacity tuning */
 .bg-home::after {
-  background-image: linear-gradient(
-      180deg,
-      rgba(6, 8, 20, 0.22),
-      rgba(6, 8, 20, 0.92)
-    ),
-    url("/bg/bg-home.webp");
-  opacity: 0.28;
+  position: absolute;
+  background-image: url("/bg/bg-home.webp");
+  opacity: 0.24;
 }
 
 .bg-services::after {
@@ -203,7 +208,7 @@ h4 {
 .glass {
   background: var(--glass-bg);
   border: 0.5px solid var(--glass-border);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
 }
 
 .glow {
