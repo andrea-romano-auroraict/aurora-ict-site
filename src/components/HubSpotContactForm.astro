@@ -10,7 +10,14 @@ const targetId = `hubspot-form-${formId}`;
 ---
 
 <div class="aurora-hubspot-form">
+  <div class="aurora-hubspot-form__status" data-hs-status aria-live="polite">
+    Loading contact form…
+  </div>
   <div id={targetId} class="aurora-hubspot-form__target" aria-live="polite"></div>
+  <div class="aurora-hubspot-form__fallback" data-hs-fallback hidden>
+    <p>We&rsquo;re having trouble loading the contact form right now.</p>
+    <a href="mailto:hello@auroraict.com.au?subject=Enquiry%20-%20Aurora%20ICT">Email Aurora ICT instead</a>
+  </div>
 
   <noscript>
     <p class="hubspot-noscript">Please enable JavaScript to load the contact form.</p>
@@ -19,10 +26,39 @@ const targetId = `hubspot-form-${formId}`;
 
 <script is:inline define:vars={{ region, portalId, formId, targetId }}>
   (() => {
+    const root = document.currentScript?.previousElementSibling;
     const target = document.getElementById(targetId);
+    const statusEl = root?.querySelector("[data-hs-status]");
+    const fallbackEl = root?.querySelector("[data-hs-fallback]");
     const firedSubmissionKeys = new Set();
+    const maxAttempts = 40;
+    let attempts = 0;
 
-    if (!target) return;
+    if (!target || !root) return;
+
+    const setState = (state) => {
+      root.dataset.state = state;
+
+      if (state === "loading") {
+        if (statusEl) statusEl.textContent = "Loading contact form…";
+        if (fallbackEl) fallbackEl.hidden = true;
+      }
+
+      if (state === "rendered") {
+        if (statusEl) statusEl.hidden = true;
+        if (fallbackEl) fallbackEl.hidden = true;
+      }
+
+      if (state === "failed") {
+        if (statusEl) {
+          statusEl.hidden = false;
+          statusEl.textContent = "Contact form unavailable";
+        }
+        if (fallbackEl) fallbackEl.hidden = false;
+      }
+    };
+
+    setState("loading");
 
     const getSubmissionKey = (payload) => {
       const candidates = [
@@ -79,11 +115,16 @@ const targetId = `hubspot-form-${formId}`;
       if (!window.hbspt?.forms?.create) return false;
       if (target.dataset.hsFormRendered === "true") return true;
 
+      console.info("[HubSpotContactForm] Rendering HubSpot form", { formId, portalId });
+
       window.hbspt.forms.create({
         region,
         portalId,
         formId,
         target: `#${targetId}`,
+        onFormReady: () => {
+          setState("rendered");
+        },
         onFormSubmitted: (_form, submissionData) => {
           trackLeadSubmission(submissionData || {});
         },
@@ -97,13 +138,23 @@ const targetId = `hubspot-form-${formId}`;
 
     const scriptId = `hs-form-script-${portalId}`;
     let script = document.getElementById(scriptId);
+    const scriptSrc = `https://js-${region}.hsforms.net/forms/embed/${portalId}.js`;
 
     if (!script) {
       script = document.createElement("script");
       script.id = scriptId;
-      script.src = `https://js-${region}.hsforms.net/forms/embed/${portalId}.js`;
+      script.src = scriptSrc;
       script.defer = true;
+      script.dataset.hsForms = "true";
       document.head.appendChild(script);
+      console.info("[HubSpotContactForm] Added HubSpot embed script", { scriptSrc });
+    } else {
+      if (script.getAttribute("src") !== scriptSrc) {
+        script.setAttribute("src", scriptSrc);
+      }
+      console.info("[HubSpotContactForm] Reusing existing HubSpot embed script", {
+        scriptSrc: script.getAttribute("src"),
+      });
     }
 
     const tryRender = () => {
@@ -115,15 +166,45 @@ const targetId = `hubspot-form-${formId}`;
 
     if (tryRender()) return;
 
-    script.addEventListener("load", tryRender, { once: true });
+    script.addEventListener(
+      "load",
+      () => {
+        console.info("[HubSpotContactForm] HubSpot script loaded");
+        tryRender();
+      },
+      { once: true }
+    );
 
     const poll = window.setInterval(() => {
+      attempts += 1;
       if (tryRender()) {
         window.clearInterval(poll);
+        return;
+      }
+
+      if (attempts >= maxAttempts) {
+        window.clearInterval(poll);
+        setState("failed");
+        console.warn("[HubSpotContactForm] Failed to render HubSpot form after retries", {
+          formId,
+          portalId,
+          attempts,
+          hasHbspt: Boolean(window.hbspt),
+        });
       }
     }, 250);
 
-    window.setTimeout(() => window.clearInterval(poll), 10000);
+    window.setTimeout(() => {
+      if (root.dataset.state !== "rendered") {
+        window.clearInterval(poll);
+        setState("failed");
+        console.warn("[HubSpotContactForm] HubSpot form timed out before render", {
+          formId,
+          portalId,
+          hasHbspt: Boolean(window.hbspt),
+        });
+      }
+    }, 11000);
   })();
 </script>
 
@@ -139,33 +220,61 @@ const targetId = `hubspot-form-${formId}`;
     width: 100%;
   }
 
+  .aurora-hubspot-form__status {
+    color: rgba(231, 238, 252, 0.9);
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  .aurora-hubspot-form__fallback {
+    margin-top: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 0.75rem;
+    padding: 0.85rem;
+    background: rgba(8, 12, 28, 0.78);
+  }
+
+  .aurora-hubspot-form__fallback p {
+    margin: 0;
+    color: #eaf1ff;
+  }
+
+  .aurora-hubspot-form__fallback a {
+    display: inline-flex;
+    margin-top: 0.5rem;
+    color: var(--color-accent-green);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    font-weight: 700;
+  }
+
   .hubspot-noscript {
     color: rgba(231, 238, 252, 0.9);
     margin: 0;
     font-size: 0.95rem;
   }
 
-  :global(.aurora-hubspot-form .hs-form) {
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-form) {
     display: grid;
     gap: 1rem;
     margin: 0;
     font-family: "Source Sans 3", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   }
 
-  :global(.aurora-hubspot-form .hs-form fieldset) {
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-form fieldset) {
     max-width: none;
     display: grid;
     gap: 1rem;
     width: 100%;
   }
 
-  :global(.aurora-hubspot-form .hs-form .hs-form-field) {
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-form .hs-form-field) {
     margin-bottom: 0;
   }
 
-  :global(.aurora-hubspot-form .hs-form-field > label),
-  :global(.aurora-hubspot-form .hs-richtext),
-  :global(.aurora-hubspot-form .hs-form label) {
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-form-field > label),
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-richtext),
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-form label) {
     color: #eaf1ff;
     font-size: 0.97rem;
     font-weight: 700;
@@ -173,9 +282,9 @@ const targetId = `hubspot-form-${formId}`;
     margin-bottom: 0.4rem;
   }
 
-  :global(.aurora-hubspot-form .hs-input),
-  :global(.aurora-hubspot-form .hs-form textarea),
-  :global(.aurora-hubspot-form .hs-form select) {
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-input),
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-form textarea),
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-form select) {
     width: 100%;
     border-radius: 0.75rem;
     border: 1px solid rgba(255, 255, 255, 0.24);
@@ -187,37 +296,37 @@ const targetId = `hubspot-form-${formId}`;
     transition: border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
   }
 
-  :global(.aurora-hubspot-form .hs-form textarea) {
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-form textarea) {
     min-height: 7.5rem;
   }
 
-  :global(.aurora-hubspot-form .hs-input::placeholder),
-  :global(.aurora-hubspot-form .hs-form textarea::placeholder) {
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-input::placeholder),
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-form textarea::placeholder) {
     color: rgba(231, 238, 252, 0.66);
   }
 
-  :global(.aurora-hubspot-form .hs-input:focus),
-  :global(.aurora-hubspot-form .hs-form textarea:focus),
-  :global(.aurora-hubspot-form .hs-form select:focus) {
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-input:focus),
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-form textarea:focus),
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-form select:focus) {
     outline: none;
     border-color: rgba(57, 255, 122, 0.85);
     box-shadow: 0 0 0 3px rgba(57, 255, 122, 0.2);
     background: rgba(11, 16, 39, 0.98);
   }
 
-  :global(.aurora-hubspot-form .hs-error-msg),
-  :global(.aurora-hubspot-form .hs-main-font-element) {
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-error-msg),
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-main-font-element) {
     color: #ffc4c4;
   }
 
-  :global(.aurora-hubspot-form .hs-submit) {
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-submit) {
     margin-top: 0.45rem;
     display: flex;
     justify-content: flex-start;
     width: 100%;
   }
 
-  :global(.aurora-hubspot-form .hs-button) {
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-button) {
     appearance: none;
     border: none;
     border-radius: 0.75rem;
@@ -234,15 +343,15 @@ const targetId = `hubspot-form-${formId}`;
     text-shadow: none;
   }
 
-  :global(.aurora-hubspot-form .hs-button:hover) {
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-button:hover) {
     filter: brightness(1.08);
   }
 
-  :global(.aurora-hubspot-form .hs-button:active) {
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-button:active) {
     transform: translateY(1px);
   }
 
-  :global(.aurora-hubspot-form .submitted-message) {
+  :global(.aurora-hubspot-form[data-state="rendered"] .submitted-message) {
     color: rgba(231, 238, 252, 0.98);
     background: rgba(57, 255, 122, 0.1);
     border: 1px solid rgba(57, 255, 122, 0.3);
@@ -250,14 +359,14 @@ const targetId = `hubspot-form-${formId}`;
     padding: 0.85rem;
   }
 
-  :global(.aurora-hubspot-form .hs-form__virality-link),
-  :global(.aurora-hubspot-form .hs-form .hs-form-virality-link) {
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-form__virality-link),
+  :global(.aurora-hubspot-form[data-state="rendered"] .hs-form .hs-form-virality-link) {
     display: none !important;
   }
 
   @media (max-width: 767px) {
-    :global(.aurora-hubspot-form .hs-submit .actions),
-    :global(.aurora-hubspot-form .hs-submit .hs-button) {
+    :global(.aurora-hubspot-form[data-state="rendered"] .hs-submit .actions),
+    :global(.aurora-hubspot-form[data-state="rendered"] .hs-submit .hs-button) {
       width: 100%;
     }
   }
