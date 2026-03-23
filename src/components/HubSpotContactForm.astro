@@ -1,0 +1,232 @@
+---
+interface Props {
+  region: string;
+  portalId: string;
+  formId: string;
+}
+
+const { region, portalId, formId } = Astro.props;
+const targetId = `hubspot-form-${formId}`;
+---
+
+<div class="aurora-hubspot-form">
+  <script src={`https://js-${region}.hsforms.net/forms/embed/${portalId}.js`} defer></script>
+  <div
+    id={targetId}
+    class="hs-form-frame"
+    data-region={region}
+    data-form-id={formId}
+    data-portal-id={portalId}
+  ></div>
+
+  <noscript>
+    <p class="hubspot-noscript">Please enable JavaScript to load the contact form.</p>
+  </noscript>
+</div>
+
+<script is:inline define:vars={{ region, portalId, formId, targetId }}>
+  (() => {
+    const target = document.getElementById(targetId);
+    const firedSubmissionKeys = new Set();
+    let listenersBound = false;
+
+    if (!target) return;
+
+    const getSubmissionKey = (payload) => {
+      const candidates = [
+        payload?.submissionId,
+        payload?.conversionId,
+        payload?.submittedAt,
+        payload?.timestamp,
+      ];
+
+      const firstDefined = candidates.find((value) => value !== undefined && value !== null);
+      return firstDefined ? String(firstDefined) : "single-page-view";
+    };
+
+    const trackLeadSubmission = (submissionPayload = {}) => {
+      const submissionKey = getSubmissionKey(submissionPayload);
+      if (firedSubmissionKeys.has(submissionKey)) return;
+      firedSubmissionKeys.add(submissionKey);
+
+      const payload = {
+        form_name: "contact",
+        lead_type: "website_contact",
+        page_location: window.location.href,
+        page_title: document.title,
+      };
+
+      window.dataLayer = window.dataLayer || [];
+      const gtagSafe =
+        typeof window.gtag === "function"
+          ? window.gtag
+          : function () {
+              window.dataLayer.push(arguments);
+            };
+
+      gtagSafe("event", "generate_lead", payload);
+      gtagSafe("event", "email_lead", payload);
+    };
+
+    const bindSubmissionListeners = () => {
+      if (listenersBound) return;
+      listenersBound = true;
+
+      window.addEventListener("message", (event) => {
+        const payload = event.data;
+        if (!payload || payload.type !== "hsFormCallback") return;
+        if (payload.eventName !== "onFormSubmitted") return;
+
+        const matchesFormId = !payload.id || payload.id === formId;
+        const matchesPortalId =
+          !payload.portalId || String(payload.portalId) === String(portalId);
+        if (!matchesFormId || !matchesPortalId) return;
+
+        trackLeadSubmission(payload.data || {});
+      });
+    };
+
+    bindSubmissionListeners();
+
+    const hasRenderedForm = () => Boolean(target.querySelector("iframe, form"));
+
+    const renderFallback = () => {
+      if (hasRenderedForm()) return true;
+
+      if (window.hbspt?.forms?.create) {
+        target.innerHTML = "";
+        window.hbspt.forms.create({
+          region,
+          portalId,
+          formId,
+          target: `#${targetId}`,
+          onFormSubmitted: (_form, submissionData) => {
+            trackLeadSubmission(submissionData || {});
+          },
+        });
+
+        return true;
+      }
+
+      return false;
+    };
+
+    if (renderFallback()) return;
+
+    window.addEventListener("load", renderFallback, { once: true });
+
+    const poll = window.setInterval(() => {
+      if (renderFallback()) {
+        window.clearInterval(poll);
+      }
+    }, 250);
+
+    window.setTimeout(() => window.clearInterval(poll), 10000);
+  })();
+</script>
+
+<style>
+  .aurora-hubspot-form {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 1rem;
+    background: rgba(4, 7, 20, 0.6);
+    padding: 1.25rem;
+  }
+
+  .hubspot-noscript {
+    color: var(--muted);
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  :global(.aurora-hubspot-form .hs-form) {
+    display: grid;
+    gap: 0.95rem;
+    margin: 0;
+    font-family: "Source Sans 3", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  }
+
+  :global(.aurora-hubspot-form .hs-form-field > label),
+  :global(.aurora-hubspot-form .hs-richtext),
+  :global(.aurora-hubspot-form .hs-form label) {
+    color: rgba(231, 238, 252, 0.95);
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  :global(.aurora-hubspot-form .hs-input),
+  :global(.aurora-hubspot-form .hs-form textarea),
+  :global(.aurora-hubspot-form .hs-form select) {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.06);
+    color: #e7eefc;
+    min-height: 2.875rem;
+    padding: 0.7rem 0.85rem;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.18);
+    transition: border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
+  }
+
+  :global(.aurora-hubspot-form .hs-input::placeholder),
+  :global(.aurora-hubspot-form .hs-form textarea::placeholder) {
+    color: rgba(231, 238, 252, 0.58);
+  }
+
+  :global(.aurora-hubspot-form .hs-input:focus),
+  :global(.aurora-hubspot-form .hs-form textarea:focus),
+  :global(.aurora-hubspot-form .hs-form select:focus) {
+    outline: none;
+    border-color: rgba(57, 255, 122, 0.8);
+    box-shadow: 0 0 0 3px rgba(57, 255, 122, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  :global(.aurora-hubspot-form .hs-error-msg),
+  :global(.aurora-hubspot-form .hs-main-font-element) {
+    color: #ffb3b3;
+  }
+
+  :global(.aurora-hubspot-form .hs-button) {
+    appearance: none;
+    border: none;
+    border-radius: 0.75rem;
+    background: var(--color-accent-green);
+    color: #08110c;
+    padding: 0.78rem 1.2rem;
+    font-weight: 800;
+    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-size: 0.98rem;
+    line-height: 1;
+    min-height: 2.9rem;
+    box-shadow: 0 0 22px rgba(57, 255, 122, 0.22);
+    transition: filter 140ms ease, transform 140ms ease;
+  }
+
+  :global(.aurora-hubspot-form .hs-button:hover) {
+    filter: brightness(1.08);
+  }
+
+  :global(.aurora-hubspot-form .hs-button:active) {
+    transform: translateY(1px);
+  }
+
+  :global(.aurora-hubspot-form .hs-submit) {
+    margin-top: 0.35rem;
+  }
+
+  :global(.aurora-hubspot-form .submitted-message) {
+    color: rgba(231, 238, 252, 0.98);
+    background: rgba(57, 255, 122, 0.1);
+    border: 1px solid rgba(57, 255, 122, 0.3);
+    border-radius: 0.75rem;
+    padding: 0.85rem;
+  }
+
+  @media (min-width: 768px) {
+    .aurora-hubspot-form {
+      padding: 1.5rem;
+    }
+  }
+</style>
