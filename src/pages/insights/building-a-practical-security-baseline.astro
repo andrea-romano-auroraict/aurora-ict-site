@@ -1,0 +1,145 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Navbar from "../../components/Navbar.jsx";
+---
+
+<BaseLayout
+  title="Building a Practical Security Baseline | Aurora ICT Insights"
+  page="insights"
+  description="A practical guide for growing businesses to build a calm, effective security baseline that improves resilience without unnecessary complexity."
+>
+  <Navbar client:load />
+
+  <main class="page-main">
+    <section class="max-w-4xl mx-auto px-6 py-16 md:py-20">
+      <a
+        href="/insights"
+        class="inline-block mb-6 text-sm md:text-base font-bold underline decoration-white/40 hover:decoration-white text-white"
+      >
+        ← Back to Insights
+      </a>
+
+      <article class="glass rounded-3xl glow p-8 md:p-10">
+        <p class="text-sm font-bold uppercase tracking-wide" style="color: var(--color-accent-purple);">Insights</p>
+        <h1 class="mt-3 text-3xl md:text-5xl font-extrabold text-white">Building a practical security baseline</h1>
+        <p class="mt-5 text-base md:text-lg" style="color: var(--muted);">
+          Security often falls behind business growth for understandable reasons. Teams are focused on delivery, customer outcomes, and operational pressure. New systems and processes are added quickly, but security controls are not always reviewed at the same pace. Over time, that gap increases risk and reduces confidence when incidents happen.
+        </p>
+      </article>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-6 pb-12">
+      <div class="glass rounded-2xl p-8 md:p-10">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white">What a practical security baseline means</h2>
+        <p class="mt-4" style="color: var(--muted);">
+          A practical baseline is the minimum set of controls, governance habits, and response capabilities a growing organisation needs to operate with confidence. It is not about buying every tool in the market. It is about choosing controls that meaningfully reduce risk, support continuity, and remain manageable as the business scales.
+        </p>
+      </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-6 pb-12">
+      <div class="glass rounded-2xl p-8 md:p-10">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white">Core areas your baseline should cover</h2>
+
+        <div class="mt-8 space-y-8">
+          <section>
+            <h3 class="text-white font-extrabold text-xl">Identity and access</h3>
+            <p class="mt-3" style="color: var(--muted);">
+              Enforce strong authentication, reduce unnecessary admin rights, and review access when people change roles. Identity is often the first control layer and one of the most important to keep current.
+            </p>
+          </section>
+
+          <section>
+            <h3 class="text-white font-extrabold text-xl">Device and endpoint hygiene</h3>
+            <p class="mt-3" style="color: var(--muted);">
+              Keep devices managed, encrypted, and monitored. Consistent endpoint standards reduce avoidable exposure and make support faster and more predictable.
+            </p>
+          </section>
+
+          <section>
+            <h3 class="text-white font-extrabold text-xl">Backups and recovery</h3>
+            <p class="mt-3" style="color: var(--muted);">
+              Backups are only useful when recovery is reliable. A practical baseline includes verified backups, clear recovery priorities, and periodic restore testing.
+            </p>
+          </section>
+
+          <section>
+            <h3 class="text-white font-extrabold text-xl">Patching and vulnerability reduction</h3>
+            <p class="mt-3" style="color: var(--muted);">
+              Maintain a disciplined patching cadence for operating systems, applications, and network components. Focus effort where exposure and business impact are highest.
+            </p>
+          </section>
+
+          <section>
+            <h3 class="text-white font-extrabold text-xl">Email and phishing resilience</h3>
+            <p class="mt-3" style="color: var(--muted);">
+              Strengthen filtering and user awareness together. Most incidents still begin with social engineering, so practical controls and repeatable training are both important.
+            </p>
+          </section>
+
+          <section>
+            <h3 class="text-white font-extrabold text-xl">Vendor and third-party risk awareness</h3>
+            <p class="mt-3" style="color: var(--muted);">
+              Understand where critical vendors touch your data and operations. Basic due diligence and clearer ownership reduce hidden dependency risk.
+            </p>
+          </section>
+
+          <section>
+            <h3 class="text-white font-extrabold text-xl">Incident readiness</h3>
+            <p class="mt-3" style="color: var(--muted);">
+              Teams should know who leads, who communicates, and which actions happen first when an incident occurs. Preparedness reduces confusion, downtime, and commercial impact.
+            </p>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-6 pb-12">
+      <div class="glass rounded-2xl p-8 md:p-10">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white">Where businesses go wrong when security gets overcomplicated</h2>
+        <ul class="mt-6 list-disc pl-6 space-y-3" style="color: var(--muted);">
+          <li>Implementing too many tools before core controls are stable.</li>
+          <li>Prioritising vendor features over operational clarity and ownership.</li>
+          <li>Treating security as a one-off project instead of an ongoing discipline.</li>
+          <li>Creating processes teams cannot sustain under real business pressure.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-6 pb-12">
+      <div class="glass rounded-2xl p-8 md:p-10">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white">What good looks like instead</h2>
+        <p class="mt-4" style="color: var(--muted);">
+          Strong security maturity usually starts with clear basics delivered consistently. Leaders have visibility on risk posture, teams understand ownership, and controls are reviewed as the business changes. The result is stronger resilience without unnecessary operational friction.
+        </p>
+      </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-6 pb-12">
+      <div class="glass rounded-2xl glow p-8 md:p-10">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white">A low-friction next step</h2>
+        <p class="mt-4" style="color: var(--muted);">
+          If your current controls feel fragmented, a practical starting point is a focused review through Aurora ICT's <a href="/services" class="underline decoration-white/40 hover:decoration-white">strategic services</a>. For many organisations, a <a href="/technology-health-check" class="underline decoration-white/40 hover:decoration-white">Technology Health Check</a> helps clarify priorities quickly and identify where risk reduction efforts will have the most impact.
+        </p>
+      </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-6 pb-24">
+      <div class="glass rounded-2xl glow p-8 md:p-10 text-center">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white">Ready to strengthen resilience without adding unnecessary complexity?</h2>
+        <p class="mt-4" style="color: var(--muted);">
+          Book a free initial consultation and we can help you prioritise practical security improvements aligned to your business goals.
+        </p>
+        <div class="mt-6">
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center px-8 py-4 rounded-xl font-extrabold transition hover:brightness-110"
+            style="background: var(--color-accent-green); color: #08110c; box-shadow: 0 0 22px rgba(57,255,122,0.22);"
+          >
+            Book a free initial consultation
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
