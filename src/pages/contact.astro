@@ -22,34 +22,101 @@ import Navbar from "../components/Navbar.jsx";
           a roadmap discussion, or targeted advisory support.
         </p>
 
-        <div class="mt-8 flex flex-col sm:flex-row gap-4">
-          <a
-            href="mailto:hello@auroraict.com.au?subject=Enquiry%20-%20Aurora%20ICT"
-            class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-extrabold transition hover:brightness-110"
-            style="background: var(--color-accent-green); color: #08110c; box-shadow: 0 0 22px rgba(57,255,122,0.22);"
-            data-ga-email-lead
-          >
-            Email Aurora ICT
-          </a>
-
-          <a
-            href="/services"
-            class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold border border-white/15 bg-white/10 hover:bg-white/15 transition text-white"
-          >
-            View services
-          </a>
-        </div>
-
         <div class="mt-6 text-sm" style="color: var(--muted);">
           Brisbane / QLD • Remote Australia-wide
         </div>
-        <p class="mt-3 text-sm" style="color: var(--muted);">
-          A short email is enough to get started. If helpful, include your main challenge and preferred timing.
-        </p>
       </div>
     </section>
 
-    <section class="max-w-7xl mx-auto px-6 pb-24 grid md:grid-cols-2 gap-6">
+    <section class="max-w-7xl mx-auto px-6 pb-24 grid lg:grid-cols-[1.2fr_1fr_1fr] gap-6 items-start">
+      <div class="glass rounded-2xl glow p-8">
+        <h2 class="text-white font-extrabold text-3xl">Send us a message</h2>
+        <p class="mt-3 text-sm" style="color: var(--muted);">
+          Fill out the form below and we will get back to you shortly.
+        </p>
+
+        <form
+          class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4"
+          id="contact-form"
+          name="contact"
+          method="POST"
+          action="/contact"
+          data-contact-form
+          data-submit-endpoint="https://formsubmit.co/ajax/hello@auroraict.com.au"
+          novalidate
+        >
+          <input type="hidden" name="_subject" value="Website contact enquiry - Aurora ICT" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+          <div>
+            <label class="contact-label" for="first_name">First name*</label>
+            <input class="contact-input" id="first_name" name="first_name" required autocomplete="given-name" />
+          </div>
+
+          <div>
+            <label class="contact-label" for="last_name">Last name</label>
+            <input class="contact-input" id="last_name" name="last_name" autocomplete="family-name" />
+          </div>
+
+          <div>
+            <label class="contact-label" for="email">Email*</label>
+            <input class="contact-input" id="email" name="email" type="email" required autocomplete="email" />
+          </div>
+
+          <div>
+            <label class="contact-label" for="company">Company</label>
+            <input class="contact-input" id="company" name="company" autocomplete="organization" />
+          </div>
+
+          <div>
+            <label class="contact-label" for="phone">Phone</label>
+            <input class="contact-input" id="phone" name="phone" type="tel" autocomplete="tel" />
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="contact-label" for="how_can_we_help">How can we help?*</label>
+            <textarea
+              class="contact-input contact-textarea"
+              id="how_can_we_help"
+              name="how_can_we_help"
+              required
+              rows="6"
+            ></textarea>
+          </div>
+
+          <div class="md:col-span-2 flex flex-col sm:flex-row sm:items-center gap-3 pt-2">
+            <button
+              type="submit"
+              class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-extrabold transition hover:brightness-110 disabled:opacity-70 disabled:cursor-not-allowed"
+              style="background: var(--color-accent-green); color: #08110c; box-shadow: 0 0 22px rgba(57,255,122,0.22);"
+              data-contact-submit
+            >
+              Book a free initial consultation
+            </button>
+            <p class="text-sm min-h-[1.25rem]" style="color: var(--muted);" data-contact-status aria-live="polite"></p>
+          </div>
+        </form>
+
+        <div
+          class="mt-6 rounded-xl border border-green-300/35 bg-green-400/10 p-4 text-sm text-green-100 hidden"
+          data-contact-success
+          role="status"
+          aria-live="polite"
+        >
+          Thank you — your message has been received. We’ll review your enquiry and get back to you shortly.
+        </div>
+
+        <div
+          class="mt-6 rounded-xl border border-red-300/35 bg-red-400/10 p-4 text-sm text-red-100 hidden"
+          data-contact-error
+          role="alert"
+        >
+          Sorry — we couldn’t submit your message right now. Please try again in a moment or email hello@auroraict.com.au.
+        </div>
+      </div>
+
       <div class="glass rounded-2xl glow p-8">
         <h2 class="text-white font-extrabold text-3xl">What to expect</h2>
         <ul class="mt-4 list-disc pl-5 space-y-2" style="color: var(--muted);">
@@ -75,22 +142,57 @@ import Navbar from "../components/Navbar.jsx";
 </BaseLayout>
 
 <script is:inline>
-  document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll("[data-ga-email-lead]").forEach((el) => {
-      el.addEventListener("click", (e) => {
-        if (typeof window === "undefined") return;
+  const initContactForm = () => {
+    const form = document.querySelector("[data-contact-form]");
+    const submitButton = document.querySelector("[data-contact-submit]");
+    const status = document.querySelector("[data-contact-status]");
+    const success = document.querySelector("[data-contact-success]");
+    const error = document.querySelector("[data-contact-error]");
 
-        e.preventDefault(); // pause mailto briefly so GA can send
+    if (!(form instanceof HTMLFormElement) || !(submitButton instanceof HTMLButtonElement)) return;
+    if (form.dataset.initialized === "true") return;
+
+    const submitEndpoint = form.dataset.submitEndpoint;
+    if (!submitEndpoint) return;
+    form.dataset.initialized = "true";
+
+    const setPendingState = (isPending) => {
+      submitButton.disabled = isPending;
+      submitButton.textContent = isPending
+        ? "Sending..."
+        : "Book a free initial consultation";
+    };
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!form.reportValidity()) return;
+
+      if (status) status.textContent = "";
+      success?.classList.add("hidden");
+      error?.classList.add("hidden");
+      setPendingState(true);
+
+      try {
+        const response = await fetch(submitEndpoint, {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: new FormData(form),
+        });
+
+        if (!response.ok) throw new Error("Form submission failed");
+
+        form.reset();
+        form.classList.add("hidden");
+        success?.classList.remove("hidden");
 
         const payload = {
-          event_category: "contact",
-          event_label: "mailto",
-          transport_type: "beacon",
-          non_interaction: true,
-          page_path: window.location.pathname,
+          form_name: "contact",
+          lead_type: "website_contact",
+          page_location: window.location.href,
+          page_title: document.title,
         };
 
-        // Always use gtag-style dataLayer push (works even if window.gtag is missing)
         window.dataLayer = window.dataLayer || [];
         const gtagSafe =
           typeof window.gtag === "function"
@@ -99,13 +201,58 @@ import Navbar from "../components/Navbar.jsx";
                 window.dataLayer.push(arguments);
               };
 
+        gtagSafe("event", "generate_lead", payload);
         gtagSafe("event", "email_lead", payload);
-
-        // Let GA send, then open mail client
-        setTimeout(() => {
-          window.location.href = el.getAttribute("href");
-        }, 150);
-      });
+      } catch (submissionError) {
+        console.error(submissionError);
+        error?.classList.remove("hidden");
+        if (status) status.textContent = "Please check your details and try again.";
+      } finally {
+        setPendingState(false);
+      }
     });
-  });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initContactForm);
+  } else {
+    initContactForm();
+  }
+
+  document.addEventListener("astro:page-load", initContactForm);
 </script>
+
+<style>
+  .contact-label {
+    display: block;
+    margin-bottom: 0.45rem;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .contact-input {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(12, 20, 30, 0.82);
+    color: #ffffff;
+    padding: 0.75rem 0.85rem;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+
+  .contact-input::placeholder {
+    color: rgba(255, 255, 255, 0.52);
+  }
+
+  .contact-input:focus {
+    outline: none;
+    border-color: rgba(57, 255, 122, 0.7);
+    box-shadow: 0 0 0 3px rgba(57, 255, 122, 0.15);
+  }
+
+  .contact-textarea {
+    min-height: 9rem;
+    resize: vertical;
+  }
+</style>
