@@ -40,8 +40,9 @@ import Navbar from "../components/Navbar.jsx";
           id="contact-form"
           name="contact"
           method="POST"
-          action="https://formsubmit.co/ajax/hello@auroraict.com.au"
+          action="/contact"
           data-contact-form
+          data-submit-endpoint="https://formsubmit.co/ajax/hello@auroraict.com.au"
           novalidate
         >
           <input type="hidden" name="_subject" value="Website contact enquiry - Aurora ICT" />
@@ -150,6 +151,9 @@ import Navbar from "../components/Navbar.jsx";
 
     if (!(form instanceof HTMLFormElement) || !(submitButton instanceof HTMLButtonElement)) return;
 
+    const submitEndpoint = form.dataset.submitEndpoint;
+    if (!submitEndpoint) return;
+
     const setPendingState = (isPending) => {
       submitButton.disabled = isPending;
       submitButton.textContent = isPending
@@ -168,7 +172,7 @@ import Navbar from "../components/Navbar.jsx";
       setPendingState(true);
 
       try {
-        const response = await fetch(form.action, {
+        const response = await fetch(submitEndpoint, {
           method: "POST",
           headers: { Accept: "application/json" },
           body: new FormData(form),
