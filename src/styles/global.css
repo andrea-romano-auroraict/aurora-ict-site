@@ -134,11 +134,12 @@ h4 {
   position: absolute;
   background-image: linear-gradient(
       180deg,
-      rgba(6, 8, 20, 0.08),
-      rgba(6, 8, 20, 0.40)
+      rgba(6, 8, 20, 0.02),
+      rgba(6, 8, 20, 0.16)
     ),
     url("/bg/bg-home.webp");
-  opacity: 0.10;
+  opacity: 0.05;
+  filter: saturate(1) contrast(1);
 }
 
 .bg-services::after {
