@@ -54,7 +54,7 @@
 
 ---
 
-## 4) Weekly Review (10–15 mins)
+## 4) Quick Adapt Notes (10 mins, optional Friday or rolling)
 
 - **What got engagement?**
   -
@@ -62,7 +62,9 @@
   -
 - **What led to conversations?**
   -
-- **What to repeat next week?**
+- **What led nowhere (drop or rewrite):**
+  -
+- **What to repeat next week (keep):**
   -
 
 ### Carry-forward into next week
@@ -78,4 +80,4 @@
 - Keep targets realistic and visible (one line each).
 - Prioritize consistency over volume.
 - Log actions daily in under 5 minutes.
-- End each week by selecting next week’s two LinkedIn posts and top conversation follow-ups.
+- Adjust next actions from live signals: keep what works, stop what doesn’t, test one small change.

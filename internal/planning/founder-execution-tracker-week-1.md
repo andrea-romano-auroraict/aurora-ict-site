@@ -38,7 +38,7 @@
 | Tue (Mar 24) | Publish **Post 2**; respond to comments/DMs (same day) | Send first outreach batch (**15**) | Light follow-up only for urgent/warm responders | — | Log positive replies in tracker | Prioritize response speed over extra volume |
 | Wed (Mar 25) | Engage on 5–10 relevant founder/ops posts | — | Send follow-up wave #1 (**10**) | Send **2** referral check-ins/intros | Note who asked for checklist/template | Tight, value-first messages only |
 | Thu (Mar 26) | Publish **Post 4**; respond to comments/DMs | Send second outreach batch (**15**) | — | — | Flag likely discovery-call candidates | Reuse proven CTA language |
-| Fri (Mar 27) | Light comment engagement + collect post learnings | — | Send follow-up wave #2 (**10**) | Send final referral touch (**1**) + thank-you loop | Confirm/book next-week calls | 45–60 min weekly review + reset |
+| Fri (Mar 27) | Light comment engagement + collect post learnings | — | Send follow-up wave #2 (**10**) | Send final referral touch (**1**) + thank-you loop | Confirm/book next-week calls | 30-min cleanup + choose next actions from what worked |
 
 ---
 
@@ -54,7 +54,7 @@
 
 ---
 
-## 4) Weekly Review (10–15 mins)
+## 4) Quick Adapt Notes (10 mins, optional Friday or rolling)
 
 - **What got engagement?**
   - Which post angle drove more meaningful comments/DMs: spend clarity or ad hoc IT diagnostic?
@@ -62,6 +62,8 @@
   - Which outreach opener performed best (cost/vendor sprawl vs roadmap clarity)?
 - **What led to conversations?**
   - Which channel started the highest-quality threads this week?
+- **What led nowhere?**
+  - Which opener/channel had low signal and should be dropped or rewritten?
 - **What to repeat next week?**
   - Keep one message pattern + one CTA format that generated useful responses.
 
@@ -82,3 +84,4 @@
 - Hit the base targets first (2 posts, 30 outreach, 20 follow-ups, 3 referral touches).
 - Keep logging lightweight: update tracker once midday and once end-of-day.
 - If capacity gets tight, protect follow-up quality before increasing new outreach volume.
+- Adapt in motion: keep traction plays, drop low-signal activity, and test one small change next week.
