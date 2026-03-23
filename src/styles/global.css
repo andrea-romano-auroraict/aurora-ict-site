@@ -88,9 +88,9 @@ h4 {
 }
 
 .bg-home.aurora-shell::before {
-  opacity: 0.22;
+  opacity: 0.18;
   background-image:
-    linear-gradient(180deg, rgba(6, 8, 20, 0.35), rgba(6, 8, 20, 0.95)),
+    linear-gradient(180deg, rgba(6, 8, 20, 0.28), rgba(6, 8, 20, 0.82)),
     radial-gradient(rgba(255, 255, 255, 0.22) 1px, transparent 1px);
   background-size: auto, 34px 34px;
 }
