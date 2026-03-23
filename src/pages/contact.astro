@@ -142,7 +142,7 @@ import Navbar from "../components/Navbar.jsx";
 </BaseLayout>
 
 <script is:inline>
-  document.addEventListener("DOMContentLoaded", () => {
+  const initContactForm = () => {
     const form = document.querySelector("[data-contact-form]");
     const submitButton = document.querySelector("[data-contact-submit]");
     const status = document.querySelector("[data-contact-status]");
@@ -150,9 +150,11 @@ import Navbar from "../components/Navbar.jsx";
     const error = document.querySelector("[data-contact-error]");
 
     if (!(form instanceof HTMLFormElement) || !(submitButton instanceof HTMLButtonElement)) return;
+    if (form.dataset.initialized === "true") return;
 
     const submitEndpoint = form.dataset.submitEndpoint;
     if (!submitEndpoint) return;
+    form.dataset.initialized = "true";
 
     const setPendingState = (isPending) => {
       submitButton.disabled = isPending;
@@ -209,7 +211,15 @@ import Navbar from "../components/Navbar.jsx";
         setPendingState(false);
       }
     });
-  });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initContactForm);
+  } else {
+    initContactForm();
+  }
+
+  document.addEventListener("astro:page-load", initContactForm);
 </script>
 
 <style>
