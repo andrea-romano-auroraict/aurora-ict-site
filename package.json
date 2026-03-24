@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "build:cf": "astro build && wrangler deploy",
     "preview": "astro preview",
+    "preview:cf": "wrangler dev",
     "astro": "astro"
   },
   "dependencies": {
@@ -18,11 +20,13 @@
     "react-dom": "^19.2.3"
   },
   "devDependencies": {
+    "@astrojs/cloudflare": "^12.6.0",
     "@astrojs/react": "^4.4.2",
     "@astrojs/sitemap": "^3.7.0",
     "@astrojs/tailwind": "^6.0.2",
     "autoprefixer": "^10.4.23",
     "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.19"
+    "tailwindcss": "^3.4.19",
+    "wrangler": "^4.11.1"
   }
 }
