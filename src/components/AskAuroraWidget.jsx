@@ -20,105 +20,145 @@ const REPLY_CTAS = [
   { label: "Contact Aurora ICT", href: "/contact" }
 ];
 
+const CTA_BY_LABEL = Object.fromEntries(REPLY_CTAS.map((cta) => [cta.label, cta]));
+
 const TOPIC_KEYWORDS = {
-  ai: [/(\bai\b|\bartificial intelligence\b|\bautomation\b|\bmachine learning\b)/i],
-  waste: [/\bwaste\b/i, /\binefficien/i, /\brework\b/i, /\bduplicat/i],
-  tools: [/\bsoftware tools?\b/i, /\btool sprawl\b/i, /\btoo many tools\b/i, /\bsaas\b/i],
-  spreadsheets: [/\bspreadsheet/i, /\bexcel\b/i, /\bgoogle sheets\b/i],
-  cyber: [/\bcyber\b/i, /\brisk\b/i, /\bsecurity\b/i, /\bmfa\b/i, /\bphishing\b/i],
-  coffee: [/\bcoffee\b/i, /\bbrisbane\b/i, /\bcafe\b/i, /\blatte\b/i]
+  ai: [
+    "ai",
+    "artificial intelligence",
+    "automate",
+    "automation",
+    "copilot",
+    "copilots",
+    "chatgpt",
+    "llm",
+    "machine learning"
+  ],
+  waste: [
+    "waste",
+    "inefficiency",
+    "inefficient",
+    "duplicate",
+    "duplication",
+    "manual",
+    "rework",
+    "cost",
+    "expensive",
+    "wasted"
+  ],
+  tools: [
+    "tool",
+    "tools",
+    "software",
+    "app",
+    "apps",
+    "saas",
+    "crm",
+    "hubspot",
+    "platform",
+    "platforms",
+    "system",
+    "systems",
+    "vendor",
+    "vendors"
+  ],
+  spreadsheets: ["spreadsheet", "spreadsheets", "excel", "google sheets", "sheet", "sheets"],
+  cyber: [
+    "cyber",
+    "cybersecurity",
+    "security",
+    "secure",
+    "phishing",
+    "mfa",
+    "backup",
+    "backups",
+    "ransomware",
+    "password",
+    "passwords",
+    "ignore cybersecurity"
+  ],
+  coffee: ["coffee", "brisbane coffee", "cafe", "café"]
 };
 
-const TOPIC_REPLIES = {
-  ai: {
-    fun: [
-      "Yes—just don’t start with a giant AI moonshot. Pick one workflow, set guardrails, and stack quick wins.",
-      "If AI can save minutes per task all day, it’s worth piloting. Keep scope tight and outcomes measurable."
+const MOCK_REPLIES = {
+  fun: {
+    ai: [
+      "Yes—just don’t launch an AI moonshot on Monday. Start with one workflow, tight guardrails, then scale what wins.",
+      "If AI saves minutes per task all day, it’s worth doing. Small pilot, clear metric, confident rollout."
     ],
-    serious: [
-      "Start AI where it improves a critical workflow with clear ROI, then expand with governance and controls.",
-      "Run a focused pilot tied to time, quality, or risk reduction metrics before broader rollout."
+    waste: [
+      "Biggest IT waste is usually duplicate tools plus manual rework—paying twice for the same outcome.",
+      "The budget leak is rarely dramatic; it’s tiny process friction repeated hundreds of times."
+    ],
+    tools: [
+      "Tool sprawl happens when every pain point gets a shiny new app. Architecture discipline fixes that fast.",
+      "If the stack looks like a festival lineup, it’s roadmap time."
+    ],
+    spreadsheets: [
+      "Spreadsheets are excellent assistants, risky operations platforms. Great for insight, rough for control.",
+      "One spreadsheet is useful; seventeen linked tabs is usually an incident waiting politely."
+    ],
+    cyber: [
+      "Quick cyber uplift is gloriously boring: MFA everywhere, tighter admin access, patching, and tested backups.",
+      "Want fast risk reduction? Do the baseline controls consistently before buying fancy toys."
+    ],
+    coffee: [
+      "Best Brisbane coffee is a heated debate, but the IT lesson is clear: consistency beats heroics every day.",
+      "Great coffee and great IT both depend on process quality, good inputs, and low latency."
+    ],
+    generic: [
+      "Great question. Pick one high-friction process, improve it in 90 days, then scale the result.",
+      "Let’s keep it practical: clear outcome, clear owner, clear metric."
     ]
   },
-  waste: {
-    fun: [
-      "The silent budget vampire is duplicate tools plus manual handovers. Trim both and productivity jumps quickly.",
-      "Most businesses pay twice: once for software, again for workaround labour. Rationalise tooling and process together."
+  serious: {
+    ai: [
+      "Use AI where it improves a core workflow with measurable ROI, then expand under governance.",
+      "Begin with a scoped pilot linked to time, quality, or risk outcomes before wider adoption."
     ],
-    serious: [
-      "The biggest hidden waste is overlapping systems and manual rework between teams.",
-      "Cost and time losses usually come from duplicate platforms and inconsistent process ownership."
-    ]
-  },
-  tools: {
-    fun: [
-      "Tool sprawl happens when every problem gets a new app. Architecture discipline is the antidote.",
-      "Too many tools usually means too many disconnected decisions. A roadmap turns chaos into a stack."
+    waste: [
+      "The largest hidden IT waste is overlapping tools and repetitive manual handoffs.",
+      "Most inefficiency comes from duplicated capabilities and unclear process ownership."
     ],
-    serious: [
-      "Companies accumulate excess tools when procurement is decentralised and architecture governance is weak.",
-      "A defined capability map and review process prevents tool duplication and complexity growth."
-    ]
-  },
-  spreadsheets: {
-    fun: [
-      "Spreadsheets are brilliant assistants, terrible operating systems. Great until one tab runs your business.",
-      "You can run on spreadsheets—until version drift, key-person risk, and audit gaps start steering decisions."
+    tools: [
+      "Tool overload usually comes from decentralised purchasing without architecture governance.",
+      "A capability map and review gate reduce duplicate software and vendor complexity."
     ],
-    serious: [
-      "Spreadsheets are useful for analysis, but core operations should move to controlled systems as complexity grows.",
-      "Operational dependence on spreadsheets creates governance, integrity, and continuity risk."
-    ]
-  },
-  cyber: {
-    fun: [
-      "Fast cyber uplift is unglamorous and effective: MFA, least privilege, patching, and tested backups.",
-      "Start with the boring controls done consistently. That’s where the biggest risk drop usually lives."
+    spreadsheets: [
+      "Spreadsheets are useful for analysis, but operational reliance increases integrity and continuity risk.",
+      "As process complexity grows, controlled systems should replace spreadsheet-driven operations."
     ],
-    serious: [
-      "Prioritise MFA, privileged access reduction, critical patching, and backup recovery testing.",
-      "The quickest risk reduction comes from baseline controls, clear ownership, and regular control validation."
-    ]
-  },
-  coffee: {
-    fun: [
-      "Brisbane coffee debates are fierce, but the IT lesson is simple: standards matter, consistency wins, and latency ruins everything.",
-      "Great coffee and great IT both need good process, quality inputs, and reliable delivery under pressure."
+    cyber: [
+      "Prioritise MFA, privileged access reduction, critical patching, and verified backup recovery.",
+      "Fastest cyber improvement comes from consistent baseline controls and clear accountability."
     ],
-    serious: [
-      "The coffee analogy maps to IT operations: consistency, repeatability, and quality control drive outcomes.",
-      "Treat technology delivery like a strong café workflow—clear process, measured performance, and minimal bottlenecks."
-    ]
-  },
-  generic: {
-    fun: [
-      "Great question. The fastest path is to identify one high-friction process and improve it with clear owners and metrics.",
-      "Let’s make it practical: start small, measure impact, and scale what demonstrably works."
+    coffee: [
+      "The coffee example maps to IT operations: repeatability, quality control, and predictable delivery.",
+      "Strong operational outcomes come from standard process and measurable performance."
     ],
-    serious: [
-      "A practical next step is to define the business outcome, current constraints, and a 90-day delivery plan.",
-      "Begin with priority mapping, risk assessment, and a focused execution sequence."
+    generic: [
+      "Define the target outcome, current constraints, and a sequenced 90-day execution plan.",
+      "Start with priority mapping and risk-based implementation steps."
     ]
   }
 };
 
-const TOPIC_CTAS = {
-  ai: REPLY_CTAS,
-  waste: REPLY_CTAS,
-  tools: REPLY_CTAS,
-  spreadsheets: REPLY_CTAS,
-  cyber: REPLY_CTAS,
-  coffee: REPLY_CTAS.slice(1, 4),
-  generic: REPLY_CTAS.slice(1, 3)
+const TOPIC_CTA_LABELS = {
+  ai: ["Explore services", "See the Digital Roadmap"],
+  waste: ["Book a Technology Health Check", "Explore services"],
+  tools: ["Explore services", "Contact Aurora ICT", "Book a Technology Health Check"],
+  spreadsheets: ["Book a Technology Health Check", "See the Digital Roadmap"],
+  cyber: ["Contact Aurora ICT", "Explore services", "Book a Technology Health Check"],
+  coffee: ["Explore services", "See the Digital Roadmap"],
+  generic: ["Explore services", "Contact Aurora ICT"]
 };
 
 const classifyQuestion = (question) => {
-  const normalizedQuestion = question.toLowerCase();
+  const normalizedQuestion = ` ${question.toLowerCase()} `;
   const orderedTopics = ["coffee", "spreadsheets", "cyber", "ai", "tools", "waste"];
 
   for (const topic of orderedTopics) {
-    const patterns = TOPIC_KEYWORDS[topic];
-    if (patterns.some((pattern) => pattern.test(normalizedQuestion))) {
+    if (TOPIC_KEYWORDS[topic].some((keyword) => normalizedQuestion.includes(keyword))) {
       return topic;
     }
   }
@@ -137,13 +177,14 @@ const getDeterministicIndex = (question, length) => {
 
 const getMockReply = ({ question, isFunMode }) => {
   const topic = classifyQuestion(question);
-  const replyPool = isFunMode ? TOPIC_REPLIES[topic].fun : TOPIC_REPLIES[topic].serious;
+  const modeKey = isFunMode ? "fun" : "serious";
+  const replyPool = MOCK_REPLIES[modeKey][topic];
   const selectedReply = replyPool[getDeterministicIndex(question, replyPool.length)];
 
   return {
     topic,
     text: selectedReply,
-    ctas: TOPIC_CTAS[topic]
+    ctas: TOPIC_CTA_LABELS[topic].map((label) => CTA_BY_LABEL[label]).filter(Boolean)
   };
 };
 
