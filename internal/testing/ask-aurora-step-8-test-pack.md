@@ -3,6 +3,11 @@
 ## Purpose
 This pack defines a practical, repeatable evaluation set for Ask Aurora before Step 9 refinement.
 
+Execution support assets:
+- `internal/testing/ask-aurora-step-8-minimum-run-checklist.md`
+- `internal/testing/ask-aurora-step-8-results-pass-01.md`
+- `internal/testing/ask-aurora-step-8-review-template.md`
+
 Scope of this step:
 - structured prompt coverage,
 - mode coverage (Fun on/off),
