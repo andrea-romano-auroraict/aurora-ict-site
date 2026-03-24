@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { env } from "cloudflare:workers";
 import {
   MODE_INSTRUCTION,
   SYSTEM_PROMPT,
@@ -41,17 +42,9 @@ const validateRequest = (payload: Partial<AskAuroraRequestPayload>) => {
   return null;
 };
 
-const getRuntimeEnv = (locals: unknown) => {
-  const runtimeEnv =
-    (locals as { runtime?: { env?: Record<string, string | undefined> } })?.runtime?.env ?? {};
-  return runtimeEnv;
-};
-
-export const GET: APIRoute = async ({ locals }) => {
-  const runtimeEnv = getRuntimeEnv(locals);
-  const hasOpenAiKey = Boolean(runtimeEnv.OPENAI_API_KEY);
-  const model = runtimeEnv.OPENAI_MODEL ?? "gpt-4.1-mini";
-  const runtimeEnvSource = Object.keys(runtimeEnv).length > 0 ? "locals.runtime.env" : "unknown";
+export const GET: APIRoute = async () => {
+  const hasOpenAiKey = Boolean(env.OPENAI_API_KEY);
+  const model = env.OPENAI_MODEL ?? "gpt-4.1-mini";
 
   return new Response(
     JSON.stringify({
@@ -60,7 +53,7 @@ export const GET: APIRoute = async ({ locals }) => {
       method: "GET",
       hasOpenAiKey,
       model,
-      runtimeEnvSource
+      runtimeEnvSource: "cloudflare:workers"
     }),
     {
       status: 200,
@@ -71,11 +64,10 @@ export const GET: APIRoute = async ({ locals }) => {
   );
 };
 
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   try {
-    const runtimeEnv = getRuntimeEnv(locals);
-    const apiKey = runtimeEnv.OPENAI_API_KEY;
-    const selectedModel = runtimeEnv.OPENAI_MODEL ?? "gpt-4.1-mini";
+    const apiKey = env.OPENAI_API_KEY;
+    const selectedModel = env.OPENAI_MODEL ?? "gpt-4.1-mini";
 
     console.info("[ask-aurora] Runtime config", {
       hasOpenAiKey: Boolean(apiKey),
