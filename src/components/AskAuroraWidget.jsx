@@ -13,180 +13,14 @@ const STARTER_PROMPTS = [
   "What’s the best coffee in Brisbane, and why is this somehow an IT problem?"
 ];
 
-const REPLY_CTAS = [
-  { label: "Book a Technology Health Check", href: "/technology-health-check" },
-  { label: "Explore services", href: "/services" },
-  { label: "See the Digital Roadmap", href: "/it-strategy-roadmap" },
-  { label: "Contact Aurora ICT", href: "/contact" }
-];
-
-const CTA_BY_LABEL = Object.fromEntries(REPLY_CTAS.map((cta) => [cta.label, cta]));
-
-const TOPIC_KEYWORDS = {
-  ai: [
-    "ai",
-    "artificial intelligence",
-    "automate",
-    "automation",
-    "copilot",
-    "copilots",
-    "chatgpt",
-    "llm",
-    "machine learning"
-  ],
-  waste: [
-    "waste",
-    "inefficiency",
-    "inefficient",
-    "duplicate",
-    "duplication",
-    "manual",
-    "rework",
-    "cost",
-    "expensive",
-    "wasted"
-  ],
-  tools: [
-    "tool",
-    "tools",
-    "software",
-    "app",
-    "apps",
-    "saas",
-    "crm",
-    "hubspot",
-    "platform",
-    "platforms",
-    "system",
-    "systems",
-    "vendor",
-    "vendors"
-  ],
-  spreadsheets: ["spreadsheet", "spreadsheets", "excel", "google sheets", "sheet", "sheets"],
-  cyber: [
-    "cyber",
-    "cybersecurity",
-    "security",
-    "secure",
-    "phishing",
-    "mfa",
-    "backup",
-    "backups",
-    "ransomware",
-    "password",
-    "passwords",
-    "ignore cybersecurity"
-  ],
-  coffee: ["coffee", "brisbane coffee", "cafe", "café"]
+const CTA_BY_KEY = {
+  "health-check": { label: "Book a Technology Health Check", href: "/technology-health-check" },
+  services: { label: "Explore services", href: "/services" },
+  roadmap: { label: "See the Digital Roadmap", href: "/it-strategy-roadmap" },
+  contact: { label: "Contact Aurora ICT", href: "/contact" }
 };
 
-const MOCK_REPLIES = {
-  fun: {
-    ai: [
-      "Yes—just don’t launch an AI moonshot on Monday. Start with one workflow, tight guardrails, then scale what wins.",
-      "If AI saves minutes per task all day, it’s worth doing. Small pilot, clear metric, confident rollout."
-    ],
-    waste: [
-      "Biggest IT waste is usually duplicate tools plus manual rework—paying twice for the same outcome.",
-      "The budget leak is rarely dramatic; it’s tiny process friction repeated hundreds of times."
-    ],
-    tools: [
-      "Tool sprawl happens when every pain point gets a shiny new app. Architecture discipline fixes that fast.",
-      "If the stack looks like a festival lineup, it’s roadmap time."
-    ],
-    spreadsheets: [
-      "Spreadsheets are excellent assistants, risky operations platforms. Great for insight, rough for control.",
-      "One spreadsheet is useful; seventeen linked tabs is usually an incident waiting politely."
-    ],
-    cyber: [
-      "Quick cyber uplift is gloriously boring: MFA everywhere, tighter admin access, patching, and tested backups.",
-      "Want fast risk reduction? Do the baseline controls consistently before buying fancy toys."
-    ],
-    coffee: [
-      "Best Brisbane coffee is a heated debate, but the IT lesson is clear: consistency beats heroics every day.",
-      "Great coffee and great IT both depend on process quality, good inputs, and low latency."
-    ],
-    generic: [
-      "Great question. Pick one high-friction process, improve it in 90 days, then scale the result.",
-      "Let’s keep it practical: clear outcome, clear owner, clear metric."
-    ]
-  },
-  serious: {
-    ai: [
-      "Use AI where it improves a core workflow with measurable ROI, then expand under governance.",
-      "Begin with a scoped pilot linked to time, quality, or risk outcomes before wider adoption."
-    ],
-    waste: [
-      "The largest hidden IT waste is overlapping tools and repetitive manual handoffs.",
-      "Most inefficiency comes from duplicated capabilities and unclear process ownership."
-    ],
-    tools: [
-      "Tool overload usually comes from decentralised purchasing without architecture governance.",
-      "A capability map and review gate reduce duplicate software and vendor complexity."
-    ],
-    spreadsheets: [
-      "Spreadsheets are useful for analysis, but operational reliance increases integrity and continuity risk.",
-      "As process complexity grows, controlled systems should replace spreadsheet-driven operations."
-    ],
-    cyber: [
-      "Prioritise MFA, privileged access reduction, critical patching, and verified backup recovery.",
-      "Fastest cyber improvement comes from consistent baseline controls and clear accountability."
-    ],
-    coffee: [
-      "The coffee example maps to IT operations: repeatability, quality control, and predictable delivery.",
-      "Strong operational outcomes come from standard process and measurable performance."
-    ],
-    generic: [
-      "Define the target outcome, current constraints, and a sequenced 90-day execution plan.",
-      "Start with priority mapping and risk-based implementation steps."
-    ]
-  }
-};
-
-const TOPIC_CTA_LABELS = {
-  ai: ["Explore services", "See the Digital Roadmap"],
-  waste: ["Book a Technology Health Check", "Explore services"],
-  tools: ["Explore services", "Contact Aurora ICT", "Book a Technology Health Check"],
-  spreadsheets: ["Book a Technology Health Check", "See the Digital Roadmap"],
-  cyber: ["Contact Aurora ICT", "Explore services", "Book a Technology Health Check"],
-  coffee: ["Explore services", "See the Digital Roadmap"],
-  generic: ["Explore services", "Contact Aurora ICT"]
-};
-
-const classifyQuestion = (question) => {
-  const normalizedQuestion = ` ${question.toLowerCase()} `;
-  const orderedTopics = ["coffee", "spreadsheets", "cyber", "ai", "tools", "waste"];
-
-  for (const topic of orderedTopics) {
-    if (TOPIC_KEYWORDS[topic].some((keyword) => normalizedQuestion.includes(keyword))) {
-      return topic;
-    }
-  }
-
-  return "generic";
-};
-
-const getDeterministicIndex = (question, length) => {
-  if (length <= 1) {
-    return 0;
-  }
-
-  const seedValue = Array.from(question).reduce((sum, char) => sum + char.charCodeAt(0), 0);
-  return seedValue % length;
-};
-
-const getMockReply = ({ question, isFunMode }) => {
-  const topic = classifyQuestion(question);
-  const modeKey = isFunMode ? "fun" : "serious";
-  const replyPool = MOCK_REPLIES[modeKey][topic];
-  const selectedReply = replyPool[getDeterministicIndex(question, replyPool.length)];
-
-  return {
-    topic,
-    text: selectedReply,
-    ctas: TOPIC_CTA_LABELS[topic].map((label) => CTA_BY_LABEL[label]).filter(Boolean)
-  };
-};
+const WELCOME_CTA_KEYS = ["health-check", "services", "roadmap", "contact"];
 
 const createAssistantMessage = (text, ctas = []) => ({
   id: crypto.randomUUID(),
@@ -202,6 +36,15 @@ const createUserMessage = (text) => ({
   ctas: []
 });
 
+const toChatCtas = (ctaKeys = []) =>
+  ctaKeys.map((key) => CTA_BY_KEY[key]).filter(Boolean);
+
+const toHistoryPayload = (messages) =>
+  messages.slice(-10).map((message) => ({
+    role: message.role,
+    text: message.text.slice(0, 1200)
+  }));
+
 export default function AskAuroraWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [isFunMode, setIsFunMode] = useState(true);
@@ -210,10 +53,10 @@ export default function AskAuroraWidget() {
   const [isThinking, setIsThinking] = useState(false);
 
   const inputRef = useRef(null);
-  const timerRef = useRef(null);
   const conversationRef = useRef(null);
+  const requestAbortRef = useRef(null);
 
-  const welcomeCtas = useMemo(() => REPLY_CTAS, []);
+  const welcomeCtas = useMemo(() => toChatCtas(WELCOME_CTA_KEYS), []);
 
   useEffect(() => {
     if (!isOpen) {
@@ -243,45 +86,81 @@ export default function AskAuroraWidget() {
     }
   }, [messages, isThinking]);
 
-  useEffect(() => () => {
-    if (timerRef.current) {
-      window.clearTimeout(timerRef.current);
-    }
-  }, []);
+  useEffect(
+    () => () => {
+      requestAbortRef.current?.abort();
+    },
+    []
+  );
 
   const handleReset = () => {
     setMessages([]);
     setInputValue("");
     setIsThinking(false);
-
-    if (timerRef.current) {
-      window.clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
+    requestAbortRef.current?.abort();
+    requestAbortRef.current = null;
   };
 
-  const handleSend = (rawMessage) => {
+  const handleSend = async (rawMessage) => {
     const question = rawMessage.trim();
     if (!question || isThinking) {
       return;
     }
 
     const userMessage = createUserMessage(question);
-    setMessages((current) => [...current, userMessage]);
+    const nextMessages = [...messages, userMessage];
+
+    setMessages(nextMessages);
     setInputValue("");
     setIsThinking(true);
 
-    timerRef.current = window.setTimeout(() => {
-      const reply = getMockReply({
-        question,
-        isFunMode
+    requestAbortRef.current?.abort();
+    const controller = new AbortController();
+    requestAbortRef.current = controller;
+
+    try {
+      const response = await fetch("/api/ask-aurora", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: question,
+          history: toHistoryPayload(nextMessages),
+          funMode: isFunMode
+        }),
+        signal: controller.signal
       });
 
-      setMessages((current) => [...current, createAssistantMessage(reply.text, reply.ctas)]);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
 
+      const payload = await response.json();
+      const assistantText =
+        typeof payload?.message === "string" && payload.message.trim().length > 0
+          ? payload.message.trim()
+          : isFunMode
+            ? "Aurora had a brief moment of technological introspection. Please try again."
+            : "Something went wrong processing that message. Please try again.";
+
+      const ctas = Array.isArray(payload?.ctaKeys) ? toChatCtas(payload.ctaKeys) : toChatCtas(["services", "contact"]);
+
+      setMessages((current) => [...current, createAssistantMessage(assistantText, ctas)]);
+    } catch (error) {
+      if (error?.name !== "AbortError") {
+        const fallbackMessage = isFunMode
+          ? "Aurora had a brief moment of technological introspection. Please try again."
+          : "Something went wrong processing that message. Please try again.";
+
+        setMessages((current) => [...current, createAssistantMessage(fallbackMessage, toChatCtas(["contact", "services"]))]);
+      }
+    } finally {
       setIsThinking(false);
-      timerRef.current = null;
-    }, 700 + Math.floor(Math.random() * 500));
+      if (requestAbortRef.current === controller) {
+        requestAbortRef.current = null;
+      }
+    }
   };
 
   const panelClasses = `ask-aurora__panel ${isFunMode ? "is-fun" : "is-calm"}`;
@@ -352,7 +231,9 @@ export default function AskAuroraWidget() {
                       key={prompt}
                       type="button"
                       className="ask-aurora__chip"
-                      onClick={() => handleSend(prompt)}
+                      onClick={() => {
+                        handleSend(prompt);
+                      }}
                       role="listitem"
                     >
                       {prompt}
