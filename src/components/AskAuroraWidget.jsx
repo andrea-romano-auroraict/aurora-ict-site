@@ -169,14 +169,19 @@ export default function AskAuroraWidget() {
   return (
     <div className="ask-aurora" aria-live="polite">
       {!isOpen && (
-        <button
-          className={launcherClasses}
-          type="button"
-          onClick={() => setIsOpen(true)}
-          aria-label="Open Ask Aurora chat"
-        >
-          <span className="ask-aurora__launcher-label">Ask Aurora</span>
-        </button>
+        <div className="ask-aurora__launcher-stack">
+          <span className={`ask-aurora__launcher-cue ${isFunMode ? "is-fun" : "is-calm"}`}>
+            Not your usual chatbot
+          </span>
+          <button
+            className={launcherClasses}
+            type="button"
+            onClick={() => setIsOpen(true)}
+            aria-label="Open Ask Aurora chat"
+          >
+            <span className="ask-aurora__launcher-label">Ask Aurora, the witty bot</span>
+          </button>
+        </div>
       )}
 
       {isOpen && (
