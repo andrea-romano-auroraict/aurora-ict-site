@@ -66,6 +66,8 @@ export const GET: APIRoute = async () => {
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    console.info("[ask-aurora] POST start");
+
     const apiKey = env.OPENAI_API_KEY;
     const selectedModel = env.OPENAI_MODEL ?? "gpt-4.1-mini";
 
@@ -80,6 +82,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const payload = (await request.json()) as Partial<AskAuroraRequestPayload>;
+    console.info("[ask-aurora] request.json() parsed");
     const validationError = validateRequest(payload);
 
     if (validationError) {
@@ -89,6 +92,12 @@ export const POST: APIRoute = async ({ request }) => {
     const message = payload.message!.trim();
     const history = sanitizeHistory(payload.history);
     const funMode = payload.funMode!;
+    console.info("[ask-aurora] payload summary", {
+      messageLength: message.length,
+      historyCount: history.length,
+      historyChars: history.reduce((acc, item) => acc + item.text.length, 0),
+      mode: funMode ? "fun" : "serious"
+    });
 
     const input = [
       {
@@ -109,6 +118,10 @@ export const POST: APIRoute = async ({ request }) => {
       }
     ];
 
+    console.info("[ask-aurora] calling OpenAI Responses API", {
+      model: selectedModel,
+      inputMessages: input.length
+    });
     const openAiResponse = await fetch(OPENAI_API_URL, {
       method: "POST",
       headers: {
@@ -123,22 +136,46 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     const requestId = openAiResponse.headers.get("x-request-id");
+    const responseContentType = openAiResponse.headers.get("content-type");
+    console.info("[ask-aurora] OpenAI response received", {
+      status: openAiResponse.status,
+      contentType: responseContentType,
+      requestId
+    });
     if (requestId) {
       console.info(`[ask-aurora] OpenAI request id: ${requestId}`);
     }
 
+    const openAiRawBody = await openAiResponse.text();
+
     if (!openAiResponse.ok) {
-      const errorText = await openAiResponse.text();
       console.error("[ask-aurora] OpenAI call failed.", {
         status: openAiResponse.status,
         openAiStatusCode: openAiResponse.status,
         requestId,
-        errorPreview: errorText.slice(0, 400)
+        errorPreview: openAiRawBody.slice(0, 400)
       });
       return new Response(JSON.stringify({ error: "Failed to generate response." }), { status: 502 });
     }
 
-    const responsePayload = await openAiResponse.json();
+    let responsePayload: any;
+    try {
+      responsePayload = JSON.parse(openAiRawBody);
+      console.info("[ask-aurora] OpenAI JSON parse succeeded");
+    } catch (parseError) {
+      console.error("[ask-aurora] OpenAI JSON parse failed.", {
+        requestId,
+        contentType: responseContentType,
+        bodyPreview: openAiRawBody.slice(0, 400),
+        parseErrorMessage: parseError instanceof Error ? parseError.message : String(parseError)
+      });
+      return new Response(JSON.stringify({ error: "Invalid JSON response from AI service." }), {
+        status: 502,
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+    }
     const assistantMessage = readOutputText(responsePayload);
 
     if (!assistantMessage) {
@@ -164,7 +201,15 @@ export const POST: APIRoute = async ({ request }) => {
       }
     );
   } catch (error) {
-    console.error("[ask-aurora] Unexpected server error.", error);
-    return new Response(JSON.stringify({ error: "Unexpected server error." }), { status: 500 });
+    console.error("[ask-aurora] Unexpected server error.", {
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined
+    });
+    return new Response(JSON.stringify({ error: "Unexpected server error." }), {
+      status: 500,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
   }
 };
