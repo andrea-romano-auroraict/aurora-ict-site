@@ -175,7 +175,7 @@ export default function AskAuroraWidget() {
           onClick={() => setIsOpen(true)}
           aria-label="Open Ask Aurora chat"
         >
-          <span className="ask-aurora__launcher-label">Ask Aurora</span>
+          <span className="ask-aurora__launcher-label">Ask Aurora, the witty bot</span>
         </button>
       )}
 
