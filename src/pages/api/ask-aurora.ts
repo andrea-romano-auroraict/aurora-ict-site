@@ -9,7 +9,6 @@ import {
 } from "../../lib/ask-aurora";
 
 const OPENAI_API_URL = "https://api.openai.com/v1/responses";
-const OPENAI_MODEL = process.env.OPENAI_MODEL ?? "gpt-4.1-mini";
 
 const readOutputText = (responsePayload: any): string => {
   if (typeof responsePayload?.output_text === "string" && responsePayload.output_text.trim()) {
@@ -42,12 +41,21 @@ const validateRequest = (payload: Partial<AskAuroraRequestPayload>) => {
   return null;
 };
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    const apiKey = process.env.OPENAI_API_KEY;
+    const runtimeEnv =
+      (locals as { runtime?: { env?: Record<string, string | undefined> } })?.runtime?.env ?? {};
+    const apiKey = runtimeEnv.OPENAI_API_KEY;
+    const selectedModel = runtimeEnv.OPENAI_MODEL ?? "gpt-4.1-mini";
+
+    console.info("[ask-aurora] Runtime config", {
+      hasOpenAiKey: Boolean(apiKey),
+      model: selectedModel
+    });
+
     if (!apiKey) {
       console.error("[ask-aurora] Missing OPENAI_API_KEY.");
-      return new Response(JSON.stringify({ error: "Service is not configured." }), { status: 500 });
+      return new Response(JSON.stringify({ error: "Missing OPENAI_API_KEY" }), { status: 500 });
     }
 
     const payload = (await request.json()) as Partial<AskAuroraRequestPayload>;
@@ -87,7 +95,7 @@ export const POST: APIRoute = async ({ request }) => {
         Authorization: `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: OPENAI_MODEL,
+        model: selectedModel,
         input,
         max_output_tokens: 420
       })
@@ -102,6 +110,7 @@ export const POST: APIRoute = async ({ request }) => {
       const errorText = await openAiResponse.text();
       console.error("[ask-aurora] OpenAI call failed.", {
         status: openAiResponse.status,
+        openAiStatusCode: openAiResponse.status,
         requestId,
         errorPreview: errorText.slice(0, 400)
       });
