@@ -41,10 +41,39 @@ const validateRequest = (payload: Partial<AskAuroraRequestPayload>) => {
   return null;
 };
 
+const getRuntimeEnv = (locals: unknown) => {
+  const runtimeEnv =
+    (locals as { runtime?: { env?: Record<string, string | undefined> } })?.runtime?.env ?? {};
+  return runtimeEnv;
+};
+
+export const GET: APIRoute = async ({ locals }) => {
+  const runtimeEnv = getRuntimeEnv(locals);
+  const hasOpenAiKey = Boolean(runtimeEnv.OPENAI_API_KEY);
+  const model = runtimeEnv.OPENAI_MODEL ?? "gpt-4.1-mini";
+  const runtimeEnvSource = Object.keys(runtimeEnv).length > 0 ? "locals.runtime.env" : "unknown";
+
+  return new Response(
+    JSON.stringify({
+      ok: true,
+      route: "/api/ask-aurora",
+      method: "GET",
+      hasOpenAiKey,
+      model,
+      runtimeEnvSource
+    }),
+    {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
+};
+
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    const runtimeEnv =
-      (locals as { runtime?: { env?: Record<string, string | undefined> } })?.runtime?.env ?? {};
+    const runtimeEnv = getRuntimeEnv(locals);
     const apiKey = runtimeEnv.OPENAI_API_KEY;
     const selectedModel = runtimeEnv.OPENAI_MODEL ?? "gpt-4.1-mini";
 
