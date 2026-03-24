@@ -6,91 +6,150 @@
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
+.ask-aurora__launcher-stack {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.48rem;
+}
+
+.ask-aurora__launcher-cue {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.28rem 0.72rem;
+  border-radius: 999px;
+  border: 1px solid rgba(161, 244, 207, 0.45);
+  background: linear-gradient(120deg, rgba(6, 12, 30, 0.9), rgba(19, 18, 49, 0.88));
+  box-shadow:
+    0 6px 20px rgba(6, 10, 24, 0.42),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 16px rgba(57, 255, 122, 0.2);
+  color: rgba(236, 244, 255, 0.95);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  animation: ask-aurora-cue-float 7s ease-in-out infinite;
+}
+
+.ask-aurora__launcher-cue.is-fun {
+  border-color: rgba(161, 244, 207, 0.58);
+  box-shadow:
+    0 7px 22px rgba(6, 10, 24, 0.48),
+    0 0 0 1px rgba(255, 255, 255, 0.09),
+    0 0 18px rgba(57, 255, 122, 0.24);
+}
+
+.ask-aurora__launcher-cue.is-calm {
+  animation-duration: 9s;
+}
+
 .ask-aurora__launcher {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-height: 3.2rem;
+  border: 1px solid rgba(169, 243, 208, 0.5);
   border-radius: 999px;
-  padding: 0.78rem 1.15rem;
+  padding: 0.96rem 1.5rem;
   background: linear-gradient(135deg, rgba(7, 11, 30, 0.95), rgba(20, 16, 44, 0.97));
   color: #f2f6ff;
-  font-weight: 700;
+  font-size: 0.96rem;
+  font-weight: 800;
   letter-spacing: 0.01em;
   cursor: pointer;
   transition: transform 180ms ease, box-shadow 240ms ease, border-color 220ms ease;
   box-shadow:
-    0 10px 28px rgba(6, 8, 20, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.1),
-    0 0 28px rgba(57, 255, 122, 0.2),
-    0 0 36px rgba(124, 58, 237, 0.2);
+    0 14px 34px rgba(4, 8, 22, 0.58),
+    0 0 0 1px rgba(255, 255, 255, 0.13),
+    0 0 30px rgba(45, 252, 168, 0.45),
+    0 0 56px rgba(118, 95, 255, 0.35),
+    0 0 74px rgba(76, 145, 255, 0.2);
 }
 
 .ask-aurora__launcher::before {
   content: "";
   position: absolute;
-  inset: -0.45rem;
+  inset: -0.7rem;
   border-radius: inherit;
-  background: radial-gradient(circle, rgba(57, 255, 122, 0.26), rgba(123, 85, 255, 0.12) 42%, transparent 70%);
-  opacity: 0.78;
+  background: radial-gradient(circle, rgba(57, 255, 122, 0.46), rgba(116, 82, 255, 0.22) 42%, transparent 74%);
+  filter: blur(4px);
+  opacity: 0.92;
   z-index: -1;
-  animation: ask-aurora-breathe 6s ease-in-out infinite;
+  animation: ask-aurora-breathe 5.8s ease-in-out infinite;
 }
 
 .ask-aurora__launcher::after {
   content: "";
   position: absolute;
-  inset: -42%;
+  inset: -44%;
   pointer-events: none;
   background: conic-gradient(
     from 180deg at 50% 50%,
     rgba(57, 255, 122, 0) 0deg,
-    rgba(57, 255, 122, 0.18) 90deg,
-    rgba(124, 58, 237, 0.24) 180deg,
-    rgba(99, 102, 241, 0.15) 240deg,
+    rgba(57, 255, 122, 0.3) 90deg,
+    rgba(124, 58, 237, 0.34) 180deg,
+    rgba(99, 102, 241, 0.22) 240deg,
     rgba(57, 255, 122, 0) 360deg
   );
   mix-blend-mode: screen;
-  opacity: 0.56;
-  animation: ask-aurora-orbit 14s linear infinite;
+  opacity: 0.66;
+  animation: ask-aurora-orbit 12s linear infinite;
 }
 
 .ask-aurora__launcher.is-calm::before {
-  opacity: 0.5;
+  opacity: 0.68;
 }
 
 .ask-aurora__launcher.is-calm::after {
-  opacity: 0.38;
-  animation-duration: 18s;
+  opacity: 0.48;
+  animation-duration: 16s;
 }
 
 .ask-aurora__launcher.is-fun::before {
-  opacity: 0.9;
+  opacity: 1;
 }
 
 .ask-aurora__launcher.is-fun::after {
-  opacity: 0.68;
-  animation-duration: 11s;
+  opacity: 0.78;
+  animation-duration: 10s;
+}
+
+.ask-aurora__launcher.is-fun {
+  box-shadow:
+    0 16px 38px rgba(4, 8, 22, 0.62),
+    0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 0 34px rgba(45, 252, 168, 0.5),
+    0 0 64px rgba(118, 95, 255, 0.42),
+    0 0 84px rgba(76, 145, 255, 0.24);
 }
 
 .ask-aurora__launcher:hover {
-  transform: translateY(-2px) scale(1.01);
-  border-color: rgba(255, 255, 255, 0.28);
+  transform: translateY(-3px) scale(1.025);
+  border-color: rgba(195, 251, 226, 0.8);
 }
 
 .ask-aurora__launcher.is-fun:hover {
   box-shadow:
-    0 12px 30px rgba(6, 8, 20, 0.58),
-    0 0 0 1px rgba(255, 255, 255, 0.12),
-    0 0 34px rgba(57, 255, 122, 0.28),
-    0 0 48px rgba(124, 58, 237, 0.26);
+    0 18px 40px rgba(4, 8, 22, 0.68),
+    0 0 0 1px rgba(255, 255, 255, 0.16),
+    0 0 40px rgba(45, 252, 168, 0.58),
+    0 0 72px rgba(118, 95, 255, 0.5),
+    0 0 94px rgba(76, 145, 255, 0.3);
 }
 
 .ask-aurora__launcher.is-calm:hover {
   box-shadow:
-    0 11px 28px rgba(6, 8, 20, 0.54),
-    0 0 0 1px rgba(255, 255, 255, 0.11),
-    0 0 24px rgba(57, 255, 122, 0.2),
-    0 0 34px rgba(124, 58, 237, 0.2);
+    0 16px 36px rgba(4, 8, 22, 0.64),
+    0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 0 33px rgba(45, 252, 168, 0.44),
+    0 0 58px rgba(118, 95, 255, 0.34),
+    0 0 76px rgba(76, 145, 255, 0.2);
+}
+
+.ask-aurora__launcher-stack:hover .ask-aurora__launcher-cue {
+  border-color: rgba(200, 252, 228, 0.76);
+  transform: translateY(-1px);
 }
 
 .ask-aurora__launcher-label {
@@ -99,6 +158,19 @@
   gap: 0.4rem;
   position: relative;
   z-index: 1;
+}
+
+.ask-aurora__launcher-label::after {
+  content: "";
+  position: absolute;
+  top: -120%;
+  bottom: -120%;
+  left: -160%;
+  width: 42%;
+  pointer-events: none;
+  background: linear-gradient(105deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0));
+  transform: rotate(12deg);
+  animation: ask-aurora-gloss 8.5s ease-in-out infinite;
 }
 
 .ask-aurora__panel {
@@ -114,15 +186,15 @@
   box-shadow:
     0 20px 48px rgba(4, 6, 16, 0.6),
     0 0 0 1px rgba(255, 255, 255, 0.08),
-    0 0 30px rgba(124, 58, 237, 0.16);
+    0 0 34px rgba(124, 58, 237, 0.18);
 }
 
 .ask-aurora__panel.is-fun {
   box-shadow:
-    0 20px 48px rgba(4, 6, 16, 0.62),
+    0 22px 52px rgba(4, 6, 16, 0.64),
     0 0 0 1px rgba(255, 255, 255, 0.09),
-    0 0 36px rgba(57, 255, 122, 0.19),
-    0 0 46px rgba(124, 58, 237, 0.25);
+    0 0 40px rgba(57, 255, 122, 0.24),
+    0 0 52px rgba(124, 58, 237, 0.3);
 }
 
 .ask-aurora__panel.is-calm {
@@ -389,6 +461,32 @@
   }
 }
 
+@keyframes ask-aurora-cue-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.5px);
+  }
+}
+
+@keyframes ask-aurora-gloss {
+  0%,
+  74%,
+  100% {
+    left: -160%;
+    opacity: 0;
+  }
+  80% {
+    opacity: 0.9;
+  }
+  92% {
+    left: 190%;
+    opacity: 0;
+  }
+}
+
 @keyframes ask-aurora-typing {
   0%,
   80%,
@@ -409,6 +507,14 @@
 
   .ask-aurora__launcher {
     margin-left: auto;
+    min-height: 3rem;
+    padding: 0.88rem 1.28rem;
+    font-size: 0.91rem;
+  }
+
+  .ask-aurora__launcher-cue {
+    font-size: 0.64rem;
+    padding: 0.24rem 0.62rem;
   }
 
   .ask-aurora__panel {
@@ -455,6 +561,8 @@
   .ask-aurora__launcher,
   .ask-aurora__launcher::before,
   .ask-aurora__launcher::after,
+  .ask-aurora__launcher-label::after,
+  .ask-aurora__launcher-cue,
   .ask-aurora__header,
   .ask-aurora__typing span {
     animation: none !important;
