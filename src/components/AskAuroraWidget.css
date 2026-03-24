@@ -1,0 +1,396 @@
+.ask-aurora {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 80;
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.ask-aurora__launcher {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  padding: 0.78rem 1.15rem;
+  background: linear-gradient(135deg, rgba(8, 12, 30, 0.95), rgba(20, 16, 44, 0.95));
+  color: #f2f6ff;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 240ms ease, border-color 220ms ease;
+  box-shadow:
+    0 8px 24px rgba(6, 8, 20, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 0 22px rgba(57, 255, 122, 0.16),
+    0 0 30px rgba(124, 58, 237, 0.14);
+}
+
+.ask-aurora__launcher::before {
+  content: "";
+  position: absolute;
+  inset: -0.45rem;
+  border-radius: inherit;
+  background: radial-gradient(circle, rgba(57, 255, 122, 0.2), transparent 65%);
+  opacity: 0.7;
+  z-index: -1;
+  animation: ask-aurora-breathe 5s ease-in-out infinite;
+}
+
+.ask-aurora__launcher.is-calm::before {
+  opacity: 0.42;
+}
+
+.ask-aurora__launcher:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.ask-aurora__launcher.is-fun:hover {
+  box-shadow:
+    0 10px 28px rgba(6, 8, 20, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 0 26px rgba(57, 255, 122, 0.22),
+    0 0 34px rgba(124, 58, 237, 0.2);
+}
+
+.ask-aurora__launcher-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ask-aurora__panel {
+  width: min(26rem, calc(100vw - 1.5rem));
+  max-height: min(80vh, 42rem);
+  display: flex;
+  flex-direction: column;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(6, 10, 24, 0.88);
+  backdrop-filter: blur(18px);
+  box-shadow:
+    0 18px 45px rgba(4, 6, 16, 0.58),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 24px rgba(124, 58, 237, 0.12);
+}
+
+.ask-aurora__panel.is-fun {
+  box-shadow:
+    0 18px 45px rgba(4, 6, 16, 0.58),
+    0 0 0 1px rgba(255, 255, 255, 0.09),
+    0 0 28px rgba(57, 255, 122, 0.14),
+    0 0 34px rgba(124, 58, 237, 0.17);
+}
+
+.ask-aurora__header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 0.85rem 1rem;
+  display: flex;
+  gap: 0.8rem;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(120deg, rgba(57, 255, 122, 0.24), rgba(124, 58, 237, 0.22), rgba(8, 12, 30, 0.82));
+  background-size: 220% 220%;
+  animation: ask-aurora-shift 9s ease infinite;
+}
+
+.ask-aurora__panel.is-calm .ask-aurora__header {
+  animation-duration: 14s;
+  background:
+    linear-gradient(120deg, rgba(57, 255, 122, 0.16), rgba(124, 58, 237, 0.14), rgba(8, 12, 30, 0.85));
+}
+
+.ask-aurora__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #f8fbff;
+}
+
+.ask-aurora__subtitle {
+  margin: 0.1rem 0 0;
+  font-size: 0.8rem;
+  color: rgba(235, 242, 255, 0.88);
+}
+
+.ask-aurora__header-actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+
+.ask-aurora__fun-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #eef4ff;
+  background: rgba(8, 12, 30, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  padding: 0.25rem 0.5rem;
+}
+
+.ask-aurora__fun-toggle input {
+  accent-color: #39ff7a;
+}
+
+.ask-aurora__ghost-btn,
+.ask-aurora__icon-btn {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(8, 12, 30, 0.45);
+  color: rgba(241, 246, 255, 0.9);
+  border-radius: 0.55rem;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.ask-aurora__icon-btn {
+  min-width: 2rem;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.ask-aurora__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: 0.95rem 1rem 1rem;
+  overflow: auto;
+  min-height: 14rem;
+}
+
+.ask-aurora__welcome {
+  margin-top: 0.25rem;
+}
+
+.ask-aurora__chips {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.ask-aurora__chip {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(232, 240, 255, 0.95);
+  border-radius: 999px;
+  padding: 0.42rem 0.72rem;
+  font-size: 0.76rem;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.ask-aurora__chip:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.ask-aurora__message {
+  max-width: 90%;
+  border-radius: 0.9rem;
+  padding: 0.65rem 0.78rem;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.ask-aurora__message p {
+  margin: 0;
+}
+
+.ask-aurora__message--assistant {
+  align-self: flex-start;
+  color: rgba(238, 246, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ask-aurora__message--user {
+  align-self: flex-end;
+  color: #0b1421;
+  border: 1px solid rgba(57, 255, 122, 0.35);
+  background: linear-gradient(145deg, rgba(57, 255, 122, 0.93), rgba(146, 255, 191, 0.9));
+}
+
+.ask-aurora__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+
+.ask-aurora__cta-link {
+  font-size: 0.72rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(7, 11, 26, 0.68);
+  color: #eef5ff;
+  text-decoration: none;
+  padding: 0.34rem 0.6rem;
+}
+
+.ask-aurora__cta-link:hover {
+  background: rgba(9, 14, 32, 0.9);
+}
+
+.ask-aurora__typing span {
+  animation: ask-aurora-typing 1.15s infinite;
+}
+
+.ask-aurora__typing span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.ask-aurora__typing span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.ask-aurora__footer {
+  position: sticky;
+  bottom: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.7rem 0.9rem 0.8rem;
+  background: rgba(7, 11, 25, 0.95);
+}
+
+.ask-aurora__composer {
+  display: flex;
+  align-items: center;
+  gap: 0.48rem;
+}
+
+.ask-aurora__composer input {
+  flex: 1;
+  border: 1px solid rgba(255, 255, 255, 0.17);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 0.75rem;
+  color: #ecf3ff;
+  padding: 0.58rem 0.72rem;
+  font-size: 0.86rem;
+}
+
+.ask-aurora__composer input::placeholder {
+  color: rgba(236, 243, 255, 0.52);
+}
+
+.ask-aurora__composer button {
+  border: 1px solid rgba(57, 255, 122, 0.45);
+  background: rgba(57, 255, 122, 0.88);
+  color: #08110c;
+  border-radius: 0.75rem;
+  font-weight: 800;
+  font-size: 0.82rem;
+  padding: 0.56rem 0.82rem;
+}
+
+.ask-aurora__composer button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ask-aurora__disclaimer {
+  margin: 0.45rem 0 0;
+  font-size: 0.68rem;
+  line-height: 1.35;
+  color: rgba(228, 237, 252, 0.68);
+}
+
+@keyframes ask-aurora-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes ask-aurora-breathe {
+  0%,
+  100% {
+    transform: scale(0.98);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.85;
+  }
+}
+
+@keyframes ask-aurora-typing {
+  0%,
+  80%,
+  100% {
+    opacity: 0.3;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 720px) {
+  .ask-aurora {
+    right: 0.75rem;
+    bottom: 0.75rem;
+    left: 0.75rem;
+  }
+
+  .ask-aurora__launcher {
+    margin-left: auto;
+  }
+
+  .ask-aurora__panel {
+    width: 100%;
+    max-height: min(90vh, 46rem);
+    border-radius: 1rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .ask-aurora {
+    right: 0;
+    left: 0;
+    bottom: 0;
+  }
+
+  .ask-aurora__panel {
+    width: 100vw;
+    height: min(93vh, 54rem);
+    max-height: none;
+    border-radius: 1rem 1rem 0 0;
+    border-bottom: 0;
+  }
+
+  .ask-aurora__header {
+    padding: 0.75rem 0.72rem;
+  }
+
+  .ask-aurora__header-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .ask-aurora__body {
+    padding: 0.82rem 0.72rem 0.9rem;
+  }
+
+  .ask-aurora__footer {
+    padding: 0.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ask-aurora__launcher,
+  .ask-aurora__launcher::before,
+  .ask-aurora__header,
+  .ask-aurora__typing span {
+    animation: none !important;
+    transition: none !important;
+  }
+}
