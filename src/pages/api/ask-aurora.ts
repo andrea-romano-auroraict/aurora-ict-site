@@ -3,8 +3,13 @@ import { env } from "cloudflare:workers";
 import {
   MODE_INSTRUCTION,
   SYSTEM_PROMPT,
+  boundUserMessage,
+  buildGuardrailInstruction,
+  detectPromptInjection,
+  detectRestrictedTopics,
   mapServicesToCtaKeys,
   sanitizeHistory,
+  shapeAssistantMessage,
   suggestServices,
   type AskAuroraRequestPayload
 } from "../../lib/ask-aurora";
@@ -89,9 +94,16 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ error: validationError }), { status: 400 });
     }
 
-    const message = payload.message!.trim();
+    const message = boundUserMessage(payload.message!);
     const history = sanitizeHistory(payload.history);
     const funMode = payload.funMode!;
+    const restrictedCategories = detectRestrictedTopics(message);
+    const promptInjectionDetected = detectPromptInjection(message, history);
+    const guardrailInstruction = buildGuardrailInstruction({
+      mode: funMode ? "fun" : "serious",
+      restrictedCategories,
+      promptInjectionDetected
+    });
     const historyRoleCounts = history.reduce(
       (acc, entry) => {
         if (entry.role === "assistant") {
@@ -109,6 +121,12 @@ export const POST: APIRoute = async ({ request }) => {
       historyChars: history.reduce((acc, item) => acc + item.text.length, 0),
       mode: funMode ? "fun" : "serious"
     });
+    if (restrictedCategories.length > 0) {
+      console.warn("[ask-aurora] restricted topic detected", { categories: restrictedCategories });
+    }
+    if (promptInjectionDetected) {
+      console.warn("[ask-aurora] prompt injection attempt detected");
+    }
 
     const input = [
       {
@@ -119,6 +137,14 @@ export const POST: APIRoute = async ({ request }) => {
         role: "system",
         content: [{ type: "input_text", text: MODE_INSTRUCTION(funMode) }]
       },
+      ...(guardrailInstruction
+        ? [
+            {
+              role: "system" as const,
+              content: [{ type: "input_text" as const, text: guardrailInstruction }]
+            }
+          ]
+        : []),
       ...history.map((entry) =>
         entry.role === "assistant"
           ? {
@@ -195,11 +221,10 @@ export const POST: APIRoute = async ({ request }) => {
         }
       });
     }
-    const assistantMessage = readOutputText(responsePayload);
-
-    if (!assistantMessage) {
-      console.error("[ask-aurora] OpenAI returned empty output.", { requestId });
-      return new Response(JSON.stringify({ error: "Empty response from AI service." }), { status: 502 });
+    const rawAssistantMessage = readOutputText(responsePayload);
+    const { message: assistantMessage, fallbackUsed } = shapeAssistantMessage(rawAssistantMessage, funMode);
+    if (fallbackUsed) {
+      console.warn("[ask-aurora] response shaping fallback used", { requestId });
     }
 
     const suggestedServices = suggestServices(message, assistantMessage);
@@ -207,9 +232,9 @@ export const POST: APIRoute = async ({ request }) => {
 
     return new Response(
       JSON.stringify({
-        message: assistantMessage,
-        suggestedServices,
-        ctaKeys,
+        message: assistantMessage ?? "",
+        suggestedServices: Array.isArray(suggestedServices) ? suggestedServices : [],
+        ctaKeys: Array.isArray(ctaKeys) ? Array.from(new Set(ctaKeys)) : [],
         modeUsed: funMode ? "fun" : "serious"
       }),
       {
