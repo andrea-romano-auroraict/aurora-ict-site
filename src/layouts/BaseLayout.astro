@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { ViewTransitions } from "astro:transitions";
+import AskAuroraWidget from "../components/AskAuroraWidget.jsx";
 
 const baseTitle = "Aurora ICT";
 const {
@@ -17,6 +18,8 @@ const socialImageUrl = new URL("/signature_banner.png", siteUrl).toString();
 const socialImageAlt = "Aurora ICT";
 const hostname = Astro.url.hostname;
 const robotsMeta = hostname === "auroraict.com.au" ? robots : "noindex, nofollow";
+const utilityRoutePrefixes = ["/privacy", "/terms", "/legal"];
+const showAskAurora = !utilityRoutePrefixes.some((prefix) => Astro.url.pathname.startsWith(prefix));
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": ["ProfessionalService", "ITService"],
@@ -127,5 +130,6 @@ const bgClass =
 
   <body class={`antialiased text-slate-800 aurora-shell ${bgClass}`}>
     <slot />
+    {showAskAurora && <AskAuroraWidget client:idle />}
   </body>
 </html>

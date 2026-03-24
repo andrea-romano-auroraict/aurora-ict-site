@@ -41,6 +41,26 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
+## 🔐 Ask Aurora API configuration
+
+The Ask Aurora backend route (`/api/ask-aurora`) requires a server-side OpenAI key.
+
+1. Copy `.env.example` to `.env`.
+2. Set `OPENAI_API_KEY`.
+3. Optionally set `OPENAI_MODEL` (defaults to `gpt-4.1-mini`).
+
+## ☁️ Cloudflare deployment (Workers / Workers Builds)
+
+This project now targets Astro server output with the Cloudflare adapter so API routes (including `/api/ask-aurora`) run at runtime.
+
+1. Install dependencies: `npm install`
+2. Build for Cloudflare: `npm run build`
+3. Deploy Worker: `npm run build:cf`
+
+Environment variables should be configured in Cloudflare (Preview + Production):
+- `OPENAI_API_KEY` (required)
+- `OPENAI_MODEL` (optional)
+
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
