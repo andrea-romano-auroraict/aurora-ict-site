@@ -92,6 +92,17 @@ export const POST: APIRoute = async ({ request }) => {
     const message = payload.message!.trim();
     const history = sanitizeHistory(payload.history);
     const funMode = payload.funMode!;
+    const historyRoleCounts = history.reduce(
+      (acc, entry) => {
+        if (entry.role === "assistant") {
+          acc.assistant += 1;
+        } else if (entry.role === "user") {
+          acc.user += 1;
+        }
+        return acc;
+      },
+      { assistant: 0, user: 0 }
+    );
     console.info("[ask-aurora] payload summary", {
       messageLength: message.length,
       historyCount: history.length,
@@ -108,10 +119,17 @@ export const POST: APIRoute = async ({ request }) => {
         role: "system",
         content: [{ type: "input_text", text: MODE_INSTRUCTION(funMode) }]
       },
-      ...history.map((entry) => ({
-        role: entry.role,
-        content: [{ type: "input_text", text: entry.text }]
-      })),
+      ...history.map((entry) =>
+        entry.role === "assistant"
+          ? {
+              role: entry.role,
+              content: [{ type: "output_text", text: entry.text }]
+            }
+          : {
+              role: entry.role,
+              content: [{ type: "input_text", text: entry.text }]
+            }
+      ),
       {
         role: "user",
         content: [{ type: "input_text", text: message }]
@@ -120,7 +138,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     console.info("[ask-aurora] calling OpenAI Responses API", {
       model: selectedModel,
-      inputMessages: input.length
+      inputMessages: input.length,
+      historyRoles: historyRoleCounts
     });
     const openAiResponse = await fetch(OPENAI_API_URL, {
       method: "POST",
