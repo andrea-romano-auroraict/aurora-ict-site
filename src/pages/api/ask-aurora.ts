@@ -200,6 +200,11 @@ export const POST: APIRoute = async ({ request }) => {
         requestId,
         errorPreview: openAiRawBody.slice(0, 400)
       });
+      console.warn("[ask-aurora] model response failed", {
+        requestId,
+        restrictedTopicDetected: restrictedCategories.length > 0,
+        promptInjectionDetected
+      });
       return new Response(JSON.stringify({ error: "Failed to generate response." }), { status: 502 });
     }
 
@@ -213,6 +218,11 @@ export const POST: APIRoute = async ({ request }) => {
         contentType: responseContentType,
         bodyPreview: openAiRawBody.slice(0, 400),
         parseErrorMessage: parseError instanceof Error ? parseError.message : String(parseError)
+      });
+      console.warn("[ask-aurora] model response failed", {
+        requestId,
+        restrictedTopicDetected: restrictedCategories.length > 0,
+        promptInjectionDetected
       });
       return new Response(JSON.stringify({ error: "Invalid JSON response from AI service." }), {
         status: 502,
@@ -229,13 +239,22 @@ export const POST: APIRoute = async ({ request }) => {
 
     const suggestedServices = suggestServices(message, assistantMessage);
     const ctaKeys = mapServicesToCtaKeys(suggestedServices);
+    console.info("[ask-aurora] model response succeeded", {
+      requestId,
+      restrictedTopicDetected: restrictedCategories.length > 0,
+      promptInjectionDetected,
+      suggestedServicesCount: suggestedServices.length,
+      ctaCount: ctaKeys.length
+    });
 
     return new Response(
       JSON.stringify({
         message: assistantMessage ?? "",
         suggestedServices: Array.isArray(suggestedServices) ? suggestedServices : [],
         ctaKeys: Array.isArray(ctaKeys) ? Array.from(new Set(ctaKeys)) : [],
-        modeUsed: funMode ? "fun" : "serious"
+        modeUsed: funMode ? "fun" : "serious",
+        restrictedTopicDetected: restrictedCategories.length > 0,
+        injectionDetected: promptInjectionDetected
       }),
       {
         status: 200,

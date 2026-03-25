@@ -1,23 +1,42 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { bucketMessageLength, getCtaDestinationType, trackEvent } from "../lib/analytics";
 import "./AskAuroraWidget.css";
 
 const WELCOME_MESSAGE =
   "Hi, I’m Aurora — the smartest AI chat. Ask me anything. I’ll give you a smart answer, and when it makes sense, I’ll connect it back to a better business, technology, or efficiency decision.";
 
 const STARTER_PROMPTS = [
-  "What’s the biggest waste most businesses ignore in IT?",
-  "Should my business be using AI yet?",
-  "Why do companies end up with too many software tools?",
-  "Can I keep running everything from spreadsheets?",
-  "What’s the best way to reduce cyber risk quickly?",
-  "What’s the best coffee in Brisbane, and why is this somehow an IT problem?"
+  {
+    key: "waste_in_it",
+    text: "What’s the biggest waste most businesses ignore in IT?"
+  },
+  {
+    key: "using_ai",
+    text: "Should my business be using AI yet?"
+  },
+  {
+    key: "too_many_tools",
+    text: "Why do companies end up with too many software tools?"
+  },
+  {
+    key: "spreadsheets",
+    text: "Can I keep running everything from spreadsheets?"
+  },
+  {
+    key: "reduce_cyber_risk",
+    text: "What’s the best way to reduce cyber risk quickly?"
+  },
+  {
+    key: "coffee_and_it",
+    text: "What’s the best coffee in Brisbane, and why is this somehow an IT problem?"
+  }
 ];
 
 const CTA_BY_KEY = {
-  "health-check": { label: "Book a Technology Health Check", href: "/technology-health-check" },
-  services: { label: "Explore services", href: "/services" },
-  roadmap: { label: "See the Digital Roadmap", href: "/it-strategy-roadmap" },
-  contact: { label: "Contact Aurora ICT", href: "/contact" }
+  "health-check": { label: "Book a Technology Health Check", href: "/technology-health-check", key: "health-check" },
+  services: { label: "Explore services", href: "/services", key: "services" },
+  roadmap: { label: "See the Digital Roadmap", href: "/it-strategy-roadmap", key: "roadmap" },
+  contact: { label: "Contact Aurora ICT", href: "/contact", key: "contact" }
 };
 
 const WELCOME_CTA_KEYS = ["health-check", "services", "roadmap", "contact"];
@@ -45,6 +64,10 @@ const toHistoryPayload = (messages) =>
     text: message.text.slice(0, 1200)
   }));
 
+const trackAuroraEvent = (eventName, properties = {}) => {
+  trackEvent(eventName, properties);
+};
+
 export default function AskAuroraWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [isFunMode, setIsFunMode] = useState(true);
@@ -65,6 +88,7 @@ export default function AskAuroraWidget() {
 
     const onEscape = (event) => {
       if (event.key === "Escape") {
+        trackAuroraEvent("aurora_launcher_close", { fun_mode: isFunMode });
         setIsOpen(false);
       }
     };
@@ -72,7 +96,7 @@ export default function AskAuroraWidget() {
     document.addEventListener("keydown", onEscape);
 
     return () => document.removeEventListener("keydown", onEscape);
-  }, [isOpen]);
+  }, [isFunMode, isOpen]);
 
   useEffect(() => {
     if (isOpen) {
@@ -94,6 +118,7 @@ export default function AskAuroraWidget() {
   );
 
   const handleReset = () => {
+    trackAuroraEvent("aurora_new_chat", { fun_mode: isFunMode });
     setMessages([]);
     setInputValue("");
     setIsThinking(false);
@@ -101,11 +126,18 @@ export default function AskAuroraWidget() {
     requestAbortRef.current = null;
   };
 
-  const handleSend = async (rawMessage) => {
+  const handleSend = async ({ rawMessage, source, promptKey }) => {
     const question = rawMessage.trim();
     if (!question || isThinking) {
       return;
     }
+
+    trackAuroraEvent("aurora_message_sent", {
+      fun_mode: isFunMode,
+      prompt_source: source,
+      prompt_key: promptKey,
+      message_length_bucket: bucketMessageLength(question.length)
+    });
 
     const userMessage = createUserMessage(question);
     const nextMessages = [...messages, userMessage];
@@ -133,7 +165,9 @@ export default function AskAuroraWidget() {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
+        const apiError = new Error(`HTTP ${response.status}`);
+        apiError.name = "ApiError";
+        throw apiError;
       }
 
       const payload = await response.json();
@@ -146,12 +180,29 @@ export default function AskAuroraWidget() {
 
       const ctas = Array.isArray(payload?.ctaKeys) ? toChatCtas(payload.ctaKeys) : toChatCtas(["services", "contact"]);
 
+      trackAuroraEvent("aurora_response_received", {
+        fun_mode: isFunMode,
+        response_success: true,
+        suggested_services_count: Array.isArray(payload?.suggestedServices) ? payload.suggestedServices.length : 0,
+        cta_count: ctas.length,
+        restricted_topic_detected: Boolean(payload?.restrictedTopicDetected),
+        injection_detected: Boolean(payload?.injectionDetected)
+      });
+
       setMessages((current) => [...current, createAssistantMessage(assistantText, ctas)]);
     } catch (error) {
       if (error?.name !== "AbortError") {
         const fallbackMessage = isFunMode
           ? "Aurora had a brief moment of technological introspection. Please try again."
           : "Something went wrong processing that message. Please try again.";
+
+        const failureType =
+          error?.name === "ApiError" ? "api_error" : error instanceof TypeError ? "network_error" : "invalid_response";
+        trackAuroraEvent("aurora_response_failed", {
+          fun_mode: isFunMode,
+          response_success: false,
+          failure_type: failureType
+        });
 
         setMessages((current) => [...current, createAssistantMessage(fallbackMessage, toChatCtas(["contact", "services"]))]);
       }
@@ -176,7 +227,10 @@ export default function AskAuroraWidget() {
           <button
             className={launcherClasses}
             type="button"
-            onClick={() => setIsOpen(true)}
+            onClick={() => {
+              trackAuroraEvent("aurora_launcher_open", { fun_mode: isFunMode });
+              setIsOpen(true);
+            }}
             aria-label="Open Ask Aurora chat"
           >
             <span className="ask-aurora__launcher-label">Ask Aurora, the witty bot</span>
@@ -198,7 +252,11 @@ export default function AskAuroraWidget() {
                 <input
                   type="checkbox"
                   checked={isFunMode}
-                  onChange={(event) => setIsFunMode(event.target.checked)}
+                  onChange={(event) => {
+                    const nextFunMode = event.target.checked;
+                    trackAuroraEvent("aurora_fun_mode_toggled", { fun_mode: nextFunMode });
+                    setIsFunMode(nextFunMode);
+                  }}
                   aria-label="Toggle Fun mode"
                 />
               </label>
@@ -208,7 +266,10 @@ export default function AskAuroraWidget() {
               <button
                 type="button"
                 className="ask-aurora__icon-btn"
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  trackAuroraEvent("aurora_launcher_close", { fun_mode: isFunMode });
+                  setIsOpen(false);
+                }}
                 aria-label="Close Ask Aurora chat"
               >
                 ×
@@ -223,7 +284,18 @@ export default function AskAuroraWidget() {
                   <p>{WELCOME_MESSAGE}</p>
                   <div className="ask-aurora__ctas">
                     {welcomeCtas.map((cta) => (
-                      <a key={cta.label} href={cta.href} className="ask-aurora__cta-link">
+                      <a
+                        key={cta.label}
+                        href={cta.href}
+                        className="ask-aurora__cta-link"
+                        onClick={() => {
+                          trackAuroraEvent("aurora_cta_clicked", {
+                            fun_mode: isFunMode,
+                            cta_key: cta.key,
+                            destination_type: getCtaDestinationType(cta.key)
+                          });
+                        }}
+                      >
                         {cta.label}
                       </a>
                     ))}
@@ -233,15 +305,21 @@ export default function AskAuroraWidget() {
                 <div className="ask-aurora__chips" role="list" aria-label="Conversation starters">
                   {STARTER_PROMPTS.map((prompt) => (
                     <button
-                      key={prompt}
+                      key={prompt.key}
                       type="button"
                       className="ask-aurora__chip"
                       onClick={() => {
-                        handleSend(prompt);
+                        trackAuroraEvent("aurora_prompt_chip_clicked", {
+                          fun_mode: isFunMode,
+                          prompt_source: "starter_chip",
+                          prompt_key: prompt.key,
+                          message_length_bucket: bucketMessageLength(prompt.text.length)
+                        });
+                        handleSend({ rawMessage: prompt.text, source: "starter_chip", promptKey: prompt.key });
                       }}
                       role="listitem"
                     >
-                      {prompt}
+                      {prompt.text}
                     </button>
                   ))}
                 </div>
@@ -257,7 +335,18 @@ export default function AskAuroraWidget() {
                 {message.ctas.length > 0 && (
                   <div className="ask-aurora__ctas">
                     {message.ctas.map((cta) => (
-                      <a key={`${message.id}-${cta.label}`} href={cta.href} className="ask-aurora__cta-link">
+                      <a
+                        key={`${message.id}-${cta.label}`}
+                        href={cta.href}
+                        className="ask-aurora__cta-link"
+                        onClick={() => {
+                          trackAuroraEvent("aurora_cta_clicked", {
+                            fun_mode: isFunMode,
+                            cta_key: cta.key,
+                            destination_type: getCtaDestinationType(cta.key)
+                          });
+                        }}
+                      >
                         {cta.label}
                       </a>
                     ))}
@@ -280,7 +369,7 @@ export default function AskAuroraWidget() {
               className="ask-aurora__composer"
               onSubmit={(event) => {
                 event.preventDefault();
-                handleSend(inputValue);
+                handleSend({ rawMessage: inputValue, source: "free_text" });
               }}
             >
               <input
