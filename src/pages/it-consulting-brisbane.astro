@@ -1,0 +1,111 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.jsx";
+---
+
+<BaseLayout
+  title="IT Consulting Brisbane"
+  page="services"
+  description="Aurora ICT provides IT consulting in Brisbane with IT consultant and virtual CTO support to reduce risk, simplify systems and vendors, and build practical technology roadmaps."
+>
+  <Navbar client:load />
+
+  <main class="page-main">
+    <section class="max-w-7xl mx-auto px-6 py-16 md:py-20">
+      <div class="glass rounded-3xl glow p-8 md:p-10">
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white">IT Consulting Brisbane for Growing Businesses</h1>
+        <p class="mt-4 text-lg md:text-xl" style="color: var(--muted);">
+          Aurora ICT provides IT consulting in Brisbane and across South East Queensland for businesses that need clearer technology direction, better risk control, and simpler systems and vendor management.
+        </p>
+        <p class="mt-3 text-base md:text-lg" style="color: var(--muted);">
+          Whether you need targeted IT consultant support or ongoing virtual CTO guidance, we focus on practical outcomes your leadership team can use immediately.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-4">
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-extrabold transition hover:brightness-110"
+            style="background: var(--color-accent-green); color: #08110c; box-shadow: 0 0 22px rgba(57,255,122,0.22);"
+          >
+            Book a free initial consultation
+          </a>
+          <a
+            href="/services"
+            class="inline-flex items-center justify-center px-6 py-3 rounded-xl font-bold border border-white/15 bg-white/10 hover:bg-white/15 transition text-white"
+          >
+            Explore services
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 pb-10">
+      <div class="glass rounded-3xl glow p-8 md:p-10">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white">What Aurora ICT helps with</h2>
+        <ul class="mt-5 space-y-3 text-base md:text-lg list-disc list-inside" style="color: var(--muted);">
+          <li>technology strategy and prioritisation linked to business outcomes</li>
+          <li>digital roadmaps with practical 90-day and 12-month next steps</li>
+          <li>cyber risk reduction and clearer security governance</li>
+          <li>simpler systems, tools, and vendor management</li>
+          <li>virtual CTO support for leadership oversight and decision quality</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 pb-10 grid md:grid-cols-2 gap-6">
+      <div class="glass rounded-3xl glow p-8 md:p-10">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white">Who this is for</h2>
+        <ul class="mt-5 space-y-3 text-base md:text-lg list-disc list-inside" style="color: var(--muted);">
+          <li>growing businesses that have outgrown ad hoc IT decisions</li>
+          <li>teams managing multiple tools and vendors without clear ownership</li>
+          <li>leaders needing strategic IT guidance without a full-time CTO</li>
+          <li>organisations in Brisbane and South East Queensland planning their next growth stage</li>
+        </ul>
+      </div>
+      <div class="glass rounded-3xl glow p-8 md:p-10">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white">Key outcomes</h2>
+        <ul class="mt-5 space-y-3 text-base md:text-lg list-disc list-inside" style="color: var(--muted);">
+          <li>reduced technology waste and avoidable spend</li>
+          <li>lower cyber and operational risk exposure</li>
+          <li>clearer technology decisions and delivery accountability</li>
+          <li>roadmaps that support scale with less complexity</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 pb-10">
+      <div class="glass rounded-3xl glow p-8 md:p-10">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white">Why Aurora ICT</h2>
+        <p class="mt-4 text-lg" style="color: var(--muted);">
+          Aurora ICT combines strategic advisory depth with practical execution support. Our Brisbane IT consulting engagements are vendor-neutral, business-focused, and designed for growing companies that need clarity before committing larger budgets.
+        </p>
+        <p class="mt-4 text-base md:text-lg" style="color: var(--muted);">
+          Many clients begin with a <a href="/technology-health-check" class="underline decoration-white/30 hover:decoration-white text-white">Technology Health Check</a> or a structured <a href="/it-strategy-roadmap" class="underline decoration-white/30 hover:decoration-white text-white">digital roadmap</a>, then extend into ongoing virtual CTO support as needed.
+        </p>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 pb-24">
+      <div class="glass rounded-3xl glow p-8 md:p-10 text-center">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white">Ready to simplify technology and reduce risk?</h2>
+        <p class="mt-4 text-lg md:text-xl" style="color: var(--muted);">
+          Book a free initial consultation to discuss your priorities and the most practical next step for your business.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center px-8 py-4 rounded-xl font-extrabold transition hover:brightness-110"
+            style="background: var(--color-accent-green); color: #08110c; box-shadow: 0 0 22px rgba(57,255,122,0.22);"
+          >
+            Book a free initial consultation
+          </a>
+          <a
+            href="/services"
+            class="inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold border border-white/15 bg-white/10 hover:bg-white/15 transition text-white"
+          >
+            View all services
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

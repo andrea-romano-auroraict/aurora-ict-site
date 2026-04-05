@@ -11,7 +11,10 @@ const {
   description = "AI-powered IT services — Virtual CTO, security, cloud, and delivery confidence for growing businesses."
 } = Astro.props;
 
-const fullTitle = title === baseTitle ? baseTitle : `${title} | ${baseTitle}`;
+const fullTitle =
+  title === baseTitle || title.endsWith(`| ${baseTitle}`)
+    ? title
+    : `${title} | ${baseTitle}`;
 const siteUrl = Astro.site?.toString() ?? "https://auroraict.com.au";
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
 const socialImageUrl = new URL("/signature_banner.png", siteUrl).toString();
@@ -22,7 +25,7 @@ const utilityRoutePrefixes = ["/privacy", "/terms", "/legal"];
 const showAskAurora = !utilityRoutePrefixes.some((prefix) => Astro.url.pathname.startsWith(prefix));
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": ["ProfessionalService", "ITService"],
+  "@type": ["LocalBusiness", "ProfessionalService", "ITService"],
   name: "Aurora ICT",
   url: canonicalUrl,
   description,
