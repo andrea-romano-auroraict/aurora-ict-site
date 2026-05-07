@@ -7,7 +7,8 @@ const {
   description,
   h1,
   seoSections = [],
-  faqs = []
+  faqs = [],
+  relatedLinks = []
 } = Astro.props;
 
 const h1Parts = typeof h1 === "string" ? h1.split(" | ") : [];
@@ -86,6 +87,19 @@ const faqSchema =
           <div class="mt-6 text-sm" style="color: var(--muted);">
             Brisbane / QLD • Remote Australia-wide • Flexible engagements
           </div>
+
+          {relatedLinks.length > 0 && (
+            <p class="mt-4 text-sm" style="color: var(--muted);">
+              You may also be interested in{' '}
+              {relatedLinks.map((link, index) => (
+                <>
+                  {index > 0 && ', '}
+                  <a href={link.href} class="underline decoration-white/30 hover:decoration-white text-white">{link.label}</a>
+                </>
+              ))}.
+            </p>
+          )}
+
         </div>
 
         <!-- Hero Visual -->
